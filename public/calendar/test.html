@@ -1,0 +1,47 @@
+<html lang="ko">
+<head>
+    <meta charset="utf-8" />
+    <title>jQuery UI Datepicker - Show week of the year</title>
+    <link rel="stylesheet" href="jquery-ui.css" />
+    <script src="jquery-1.9.1.js"></script>
+    <script src="jquery-ui.js"></script>
+    <link rel="stylesheet" href="style.css" />
+
+    <script>
+        $(function() {  
+        $( "#datepicker" ).datepicker({  
+            // 달력 아이콘  
+            showOn: "button",
+            buttonImage: "calendar.gif",  
+            buttonImageOnly: true,  
+
+            // 달력 하단의 종료와 오늘 버튼 Show  
+            showButtonPanel: true,  
+            // date 포멧  
+            dateFormat : "yy/mm/dd",  
+            // 달력 에니메이션 ( show(default),slideDown,fadeIn,blind,bounce,clip,drop,fold,slide,"")  
+            showAnim : "",  
+            // 다른 달의 일 보이기, 클릭 가능  
+            showOtherMonths: true,  
+            selectOtherMonths: true,  
+            // 년도, 달 변경  
+            changeMonth: true,  
+            changeYear: true,   
+            // 여러달 보이기  
+            numberOfMonths: 1,  
+            showButtonPanel: true,
+            // 달력 선택 제한 주기(min: 현재부터 -20일,max:현재부터 +1달+10일)  
+            // minDate: -20,  
+            // maxDate: "+1M +10D",  
+            // 주차 보여주기  
+            // showWeek: true,  
+            firstDay: 1  ,
+            showMonthAfterYear: true
+        });
+    });  
+</script>
+</head>
+<body>
+    <p>Date(ex 2014/08/14) : <input type="text" size="10"  id="datepicker" placeholder="2014/08/14" /></p>
+</body>
+</html>

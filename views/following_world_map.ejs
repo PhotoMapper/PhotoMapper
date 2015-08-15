@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+  <title><%=title%></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="favicon.ico">
+
+  <!-- CSS Global Compulsory -->
+  <link rel="stylesheet" href="/assets/plugins/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+
+  <!-- CSS Implementing Plugins -->
+  <link rel="stylesheet" href="/assets/plugins/line-icons/line-icons.css">
+  <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/assets/plugins/flexslider/flexslider.css">     
+  <link rel="stylesheet" href="/assets/plugins/parallax-slider/css/parallax-slider.css">
+  <link rel="stylesheet" href="/assets/plugins/fancybox/source/jquery.fancybox.css">
+
+  <!-- CSS Theme -->    
+  <link rel="stylesheet" href="/assets/css/themes/default.css" id="style_color">
+
+  <link rel="stylesheet" href="/stylesheets/main_style.css">
+  
+  <!-- CSS Customization -->
+  <link rel="stylesheet" href="/assets/css/custom.css">
+
+  <script src="/javascripts/jquery-1.9.1.min.js" type="text/javascript"></script> <!-- 동그라미 나열 -->
+ 
+</head>
+<body>
+  <div id="tooltip_country" class="hidden">
+    <p><span id="county-label"></span></p>
+  </div>
+  <div id="tooltip_state" class="hidden">
+    <p><span id="state-label"></span></p>
+  </div>
+
+  <script src="/javascripts/d3.v3.min.js"></script>
+  <script src="/javascripts/topojson.v1.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script> 
+  <script src="/javascripts/jquery.form.js"></script> 
+  <script src="/javascripts/jquery.validate.min.js"></script>
+
+  <script>
+
+    function go_friend_map(m_id, m_name) { 
+
+      console.log(m_id);
+      console.log(m_name);
+
+      var f = document.getElementById('GoFirendMap');
+
+      f.user_id.value = m_id;
+      f.user_name.value = m_name;
+        
+      f.action="/following_world_map";
+      f.method="post";
+      f.submit();
+
+    }
+
+    $(document).ready(function() {
+
+      $('#following_search_form').ajaxForm(function(reaults) { 
+
+        var f = document.getElementById('following_search_form');
+
+          $("#following_list").empty(); // div 하위 요소 모두 제거
+
+          $.each(reaults, function(i, data)
+          {
+
+            var div_data = $("<button id='friend_list_button'><img src='http://graph.facebook.com/" + data.fing_following_user_id + "/picture'><p id='friend_name'>" + data.fing_following_user_name + "</p></button>")
+            .click(function(){ go_friend_map(data.fing_following_user_id, data.fing_following_user_name) });
+            $(div_data).appendTo("#following_list");
+
+          });
+
+          f.user_name.value = '';
+
+        });
+
+    });
+
+  </script>
+
+  <!--=== Style Switcher ===-->    
+  <i class="style-switcher-btn"><img src="/images/menubar/friend_map.png"></i>
+  <div class="style-switcher animated fadeInRight">
+      <div class="theme-close"><img src="/images/friend_list/Xicon.png"></div>
+      <ul class="list-unstyled">
+        <div id="view_following">
+          <p id="user_name"><%=user.name%> 님의 팔로잉</p>
+          <!-- Friend Search -->
+          <div class="friend-input-group">
+            <form id="following_search_form" action="/search_my_f" method="post">
+              <input type="text" class="form-control" name="user_name" placeholder="나의 팔로잉 검색">
+              <span class="input-group-btn">
+                <button class="btn-u" id="flowwing_search_button" type="submit"><img src="/images/menubar/search.png"></button>
+              </span>
+            </form>
+          </div>
+          <!-- End Friend Search --> 
+          <form id="GoFirendMap">
+            <input type="hidden" name="user_id">
+            <input type="hidden" name="user_name">
+            <div class="friend_list" id="following_list">
+              <% following_lists.forEach(function(item, index) { %>
+              <button id="friend_list_button" onclick="go_friend_map('<%=item.fing_following_user_id%>','<%=item.fing_following_user_name%>');"><img src="http://graph.facebook.com/<%=item.fing_following_user_id%>/picture"><p id="friend_name"><%=item.fing_following_user_name%></p></button>
+              <% }); %>
+            </div>
+          </form>
+        </div>
+
+      </ul>
+  </div><!--/style-switcher--> 
+  <!--=== End Style Switcher ===-->  
+  
+  <div class="wrapper">
+    <div class="header">
+
+      <!-- Navbar -->
+      <div class="navbar navbar-default" role="navigation">
+        <!-- <div class="container"> -->
+
+          <div class="navbar-header">
+            <% if (user) { %>
+            <a class="navbar-brand" href="/main">
+              <img id="logo-header" src="/images/menubar/PageLogoWhite.png" alt="Logo">
+            </a>
+            <% } else { %>
+            <a class="navbar-brand" href="/intro">
+              <img id="logo-header" src="/images/menubar/PageLogoWhite.png" alt="Logo">
+            </a>
+            <% } %> 
+
+          </div>
+
+          <div class="menu">
+
+            <div class="facebook-login">
+              <% if (user) { %>
+              <a href="/logout">
+                <button class="btn-facebook">
+                  <i class="fa fa-facebook"></i> Logout
+                </button>
+              </a>
+              <div class="information">
+                <p class="welcome"> Welcome<br> <%= user.name %>'s photomapper</p>
+              </div>
+              <div class="picture">
+                <img src="http://graph.facebook.com/<%=user.id%>/picture">
+              </div>
+              <% } else { %>
+              <a href="/auth/facebook">
+                <button class="btn-facebook">
+                  <i class="fa fa-facebook"></i> Login
+                </button>
+              </a>
+              <% } %> 
+            </div>
+
+            <% if (user) { %>
+
+            <!-- Setting -->
+            <ul class="nav navbar-nav">
+              <li id="setting">
+                <a href="/setting">
+                  <img src="/images/menubar/setting.png" alt="설정"> 
+                </a>
+              </li>
+            </ul>
+            <!-- End Setting -->
+
+            <!-- statistics view -->
+            <ul class="nav navbar-nav">
+              <li id="statistics">
+                <a href="/statistics">
+                  <!-- <img src="/images/menubar/full_photo.png" alt="내 사진 보기"> -->
+                  <i class="fa fa-bar-chart-o"></i>
+                </a>
+              </li>
+            </ul>
+            <!-- End statistics View -->
+
+            <!-- photo view -->
+            <ul class="nav navbar-nav">
+              <li id="photoView">
+                <a href="/all_photo_view" class="active">
+                  <img src="/images/menubar/full_photo.png" alt="내 사진 보기">
+                </a>
+              </li>
+            </ul>
+            <!-- End Photo View -->
+
+
+            <!-- Friend -->
+            <ul class="nav navbar-nav">
+              <li id="friend">
+                <a href="/all_following_world_map">
+                  <img src="/images/menubar/friend_map.png" alt="친구 지도 및 사진 보기">
+                </a>
+              </li>
+            </ul>
+            <!-- End Friend -->
+
+            <% } %> 
+
+          </div>
+          <!-- End menu -->
+
+          <!-- End Container -->
+        <!-- </div>     -->
+
+        <!-- End Navbar -->
+      </div>        
+
+      <!-- header end -->
+    </div>
+
+    
+  <div class="content">
+
+
+<!-- ////////////// ★★★★ 중요 ★★★★ 그 친구가 가싶요 누른 나라에만 뜨도록 하기 /////////////////// -->
+    <form id="goLink">
+      <div id="toggle" class="hidden">
+      <input type="hidden" name="nation_code" />
+      <input type="hidden" name="city_name" />
+      <input type="hidden" name="user_name" />
+      <input type="hidden" name="user_id" />
+        <a id="toggle_button"></a>
+        <div class="circle" id="circle_id">
+          <a href="javascript:photoLook();" class="icon-photoLook"><img src=".\images\photoLook.png"></a>
+        </div>
+      </div>
+    </form>
+<!-- //////////////////////////////////////////////////////////////////////////////////// -->
+
+
+    <div class="percentage">
+      <div class="coloum" style="margin-top:40px; margin-left:10px;">
+        <div class="row margin-bottom-40">
+          <div class="counters col-md-3 col-sm-3" style="color:<%=following_user.color%>;">
+              <span><img src="http://graph.facebook.com/<%=following_user.id%>/picture"></span>
+          </div>
+          <div class="counters col-md-9 col-sm-9" style="color:<%=following_user.color%>;">
+              <span><%=following_user.name%></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="canvas" id="canvas_id">
+
+      <script>
+//--------------------------------- 전역변수들 / default ---------------------------------
+      var width = screen.width,
+      height = (screen.height*3)/4,
+      active = d3.select(null);
+
+      var country, state;
+
+      var flag = 0;
+
+      var pro = d3.geo.mercator()
+          .scale(width/10)
+          .translate([width/2, height*7/10]);
+
+      var path = d3.geo.path()
+          .projection(pro);
+
+      var zoom = d3.behavior.zoom() // Constructs a new zoom behavior
+          .scaleExtent([1, 20]) // Specifies the zoom scale's allowed range as a two-element array, [minimum, maximum]
+          .on("zoom", zoomed);
+
+      var svg = d3.select(".canvas").append("svg")
+          .attr("width", width)
+          .attr("height", height)
+          .call(zoom);
+        //.call(drag);
+
+      var tooltip = d3.select("canvas").append("div")
+          .attr("class", "tooltip");
+
+      var toggle = d3.select("canvas").append("div")
+          .attr("id", "toggle");
+
+      var g = svg.append("g");  // g : group for svg
+
+      var visited_result = '<%= following_visit_results %>';
+
+      //--------------------------------- 세계지도 그리는 파트 ---------------------------------
+        d3.json("/json/world.json", function(error, world) {
+          if (error) return console.error(error);
+
+          if(visited_result === null){
+            g.append("g")
+              .attr("class", "countries")
+              .selectAll("path")
+              .data(topojson.feature(world, world.objects.countries).features)
+              .enter().append("path")
+                  .attr("d", path)  // shape of an SVG Path element is defined in "d"
+                  .attr("title", function(d,i) { return d.name; })
+                  .on("mouseup", country_clicked) // mousedown 이벤트가 일어났을 시에는 clicked 함수로 가란 뜻
+                  .on("mouseover", getContryNames) // mouseover 이벤트가 일어났을 시에는 getContryNames 함수로 가란 뜻
+                  .on("mouseout", clearCountryNames)
+                  .on("mousedown", mouseDown)
+                  .on("mousemove", mouseMove)
+                  .style("fill", function(d, i) {
+                    return "<%=following_user.color%>";
+                  });
+          }else{
+            g.append("g")
+              .attr("class", "countries")
+              .selectAll("path")
+              .data(topojson.feature(world, world.objects.countries).features)
+              .enter().append("path")
+                  .attr("d", path)  // shape of an SVG Path element is defined in "d"
+                  .attr("title", function(d,i) { return d.name; })
+                  .on("mouseup", country_clicked) // mousedown 이벤트가 일어났을 시에는 clicked 함수로 가란 뜻
+                  .on("mouseover", getContryNames) // mouseover 이벤트가 일어났을 시에는 getContryNames 함수로 가란 뜻
+                  .on("mouseout", clearCountryNames)
+                  .on("mousedown", mouseDown)
+                  .on("mousemove", mouseMove)
+                  .style("fill", function(d, i) {
+                    <% following_visit_results.forEach( function(item, index){ %>
+                        if(d.id == '<%= item.vp_nation_code %>') return '#f3746d';
+                    <% }); %>
+                    return '<%=following_user.color%>';
+                  });
+          }
+
+          g.append("path")
+          .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
+          .attr("class", "borders")
+          .attr("d", path);
+
+        });
+      //--------------------------------- END 세계지도 그리는 파트 ---------------------------------
+
+//--------------------------------- country tooltip 나타내게 하는 function ---------------------------------
+      function getContryNames(d){
+        var xPosition = d3.select(this).attr("x");
+        var yPosition = d3.select(this).attr("y");
+
+        //Update the tooltip position and value
+        d3.select("#tooltip_country")
+          //Show the tooltip above where the mouse triggers the event
+          .style("left", (d3.event.pageX - 70) + "px")     
+          .style("top", (d3.event.pageY - 70) + "px")
+          .select("#county-label")  
+          .html("<strong>" + d.properties.name + "</strong>" + "<br/>");
+
+        //Show the tooltip
+        d3.select("#tooltip_country").classed("hidden", false);
+      }
+
+//--------------------------------- country tooltip 지우는 하는 function ---------------------------------
+      function clearCountryNames(d){
+        d3.select("#tooltip_country").classed("hidden", true);
+      }
+
+
+//--------------------------------- state tooltip 나타내게 하는 function ---------------------------------
+      function getStateNames(d){
+        var xPosition = d3.select(this).attr("x");
+        var yPosition = d3.select(this).attr("y");
+
+        //Update the tooltip position and value
+        d3.select("#tooltip_state")
+          //Show the tooltip above where the mouse triggers the event
+          .style("left", (d3.event.pageX - 70) + "px")     
+          .style("top", (d3.event.pageY - 70) + "px")
+          .select("#state-label")  
+          .html("<strong>" + d.properties.name + "</strong>" + "<br/>");
+
+        //Show the tooltip
+        d3.select("#tooltip_state").classed("hidden", false);
+      }
+
+
+//--------------------------------- state tooltip 지우는 function ---------------------------------
+      function clearStateNames(d){
+        d3.select("#tooltip_state").classed("hidden", true);
+      }
+
+
+//--------------------------------- 드래그 체크하는 function1 ---------------------------------
+      function mouseDown(){
+        flag = 0;
+      }
+
+
+//--------------------------------- 드래그 체크하는 function2 ---------------------------------
+      function mouseMove(){
+        flag = 1;
+      }
+
+
+//--------------------------------- 나라 클릭하면 그 나라 지도로 넘어가는 코드 ---------------------------------
+      function country_clicked(d){
+
+        if (flag === 0){  // dragging check  -> 드래그를 한 뒤 마우스를 뗄 때 country_clicked function이 작동하는 것 방지
+
+          var name = d.properties.name;
+          var code = d.id;
+          var filename = "/json/states/"+code+".json";
+
+          g.selectAll(".active").classed("active", false);
+          g.selectAll(".state_city_names").remove();
+
+          g.selectAll(".state").remove();
+          g.selectAll(".countries").style('display', 'none');
+
+          if (d && country !== d) {
+
+            country = d;
+            state = null;
+
+            d3.json(filename, function(error, state) {
+
+              if (error) return console.error(error);
+
+              if(visited_result === null){
+                g.append("g")
+                  .attr("class", "state")
+                  .selectAll("path")
+                  .data(topojson.feature(state, state.objects.layer1).features)
+                  .enter().append("path")
+                      .attr("d", path)  // shape of an SVG Path element is defined in "d"
+                      .attr("title", function(d,i) { return d.gn_name; })
+                      // .attr("class", "active")
+                      .on("mouseup", state_clicked) // mousedown 이벤트가 일어났을 시에는 clicked 함수로 가란 뜻
+                      .on("mouseover", getStateNames) // mouseover 이벤트가 일어났을 시에는 getContryNames 함수로 가란 뜻
+                      .on("mouseout", clearStateNames)
+                      .on("mousedown", mouseDown)
+                      .on("mousemove", mouseMove)
+                      .style("fill", function(d, i) {
+                        return "<%=following_user.color%>";
+                      });
+              }else{
+                g.append("g")
+                  .attr("class", "state")
+                  .selectAll("path")
+                  .data(topojson.feature(state, state.objects.layer1).features)
+                  .enter().append("path")
+                      .attr("d", path)  // shape of an SVG Path element is defined in "d"
+                      .attr("title", function(d,i) { return d.gn_name; })
+                      // .attr("class", "active")
+                      .on("mouseup", state_clicked) // mousedown 이벤트가 일어났을 시에는 clicked 함수로 가란 뜻
+                      .on("mouseover", getStateNames) // mouseover 이벤트가 일어났을 시에는 getContryNames 함수로 가란 뜻
+                      .on("mouseout", clearStateNames)
+                      .on("mousedown", mouseDown)
+                      .on("mousemove", mouseMove)
+                      .style("fill", function(d, i) {
+                        <% following_visit_results.forEach( function(item, index){ %>
+                            if(d.properties.name == '<%= item.vp_city_name %>') return '#f3746d';
+                        <% }); %>
+                        return "<%=following_user.color%>";
+                      });
+              }
+
+
+              g.append("g")
+                  .attr("class", "state_city_names")
+                  .selectAll("text")
+                  .data(topojson.feature(state, state.objects.layer1).features)
+                .enter().append("text")
+                  .on("mouseup", state_clicked) // mousedown 이벤트가 일어났을 시에는 clicked 함수로 가란 뜻
+                  .on("mouseover", getStateNames) // mouseover 이벤트가 일어났을 시에는 getContryNames 함수로 가란 뜻
+                  .on("mouseout", clearStateNames)
+                  .on("mousedown", mouseDown)
+                  .on("mousemove", mouseMove)
+                  .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })                  
+                  .style("fill", function(d){
+                    /*if(d.properties.name == capital_.features.capital){
+                      return '#ff0000';
+                    }*/
+                    return '#1f3036';
+                  })
+                  /*.style("font-size", function(d){
+
+                    //★★★★★★★★★★★★ 수도 / 주요 도시만 표시되게 하기 ★★★★★★★★★★★★
+                    var bounds = path.bounds(d),
+                    dx = bounds[1][0] - bounds[0][0],
+                    dy = bounds[1][1] - bounds[0][1];
+
+                    if( dx >= 20){
+                      return '2px';
+                    }else if ( dx >= 10 ){
+                      return '1px';
+                    }else{
+                      return '0.5px'
+                    }
+
+                  })
+                  .style("cursor", 'default')
+                  .text(function(d) { return d.properties.woe_name; })*/;
+
+            });
+
+            click_zoom(d);
+            zoom.translate(translate).scale(scale);
+
+            getToggle(d); // 뿅뿅뿅 애니메이션을 불러오는 function
+
+        }else if(flag === 1){ // dragging check
+          flag = 0;
+        }
+
+      }
+    }
+
+
+//--------------------------------- 주나 도시를 클릭했을 시에 확대되는 코드 ---------------------------------
+      function state_clicked(d){
+
+        if (flag === 0){ // dragging check
+          if (d && state !== d) {
+
+            clearStateNames(d);
+
+            state = d;
+
+            active.classed("active", false);
+            active = d3.select(this).classed("active", true);
+
+
+            // g.attr("class", "city").attr("class", "active");
+
+            click_zoom(d);
+
+            getToggle(d); 
+            
+          } else {
+            
+            state = null;
+            g.selectAll(".state").style('display', 'none');
+            g.selectAll(".countries").style('display', 'initial');
+            g.selectAll(".state_city_names").remove();
+            zoom.translate([0, 0]).scale(1);
+
+            clearToggle(); // 뿅뿅뿅 애니메이션을 없애는 function
+
+            reset();
+
+          }
+        }else if(flag === 1){ // dragging check
+          flag = 0;
+        }
+
+
+      }
+
+
+//--------------------------------- 뿅뿅뿅 애니메이션을 불러오는 function ---------------------------------
+      function getToggle(d){
+
+        var bounds = path.bounds(d), 
+        dx = bounds[1][0] - bounds[0][0],
+        dy = bounds[1][1] - bounds[0][1];
+
+        d3.select("#toggle_button")
+        /*.style("left", (width/2 - dx - 40) + "px")
+        .style("top", (height/2 - dy - 40) + "px")*/
+        .style("left", (width/2 - 40) + "px")
+        .style("top", (height/2 - 40) + "px")
+        // .attr("transform", "translate(" + path.centroid(d) + ")");
+        
+
+
+        //--------------------------------- 원 모양으로 퍼지는 코드 ---------------------------------
+        var items = document.querySelectorAll('.circle a');
+
+        for(var i = 0, l = items.length; i < l; i++) {
+          items[i].style.left = (((width/2) - 90*Math.cos(2 * Math.PI - 1*(1/l)*i*Math.PI)).toFixed(4)) + "px";
+
+          items[i].style.top = (((height/2) + 90*Math.sin(2 * Math.PI - 1*(1/l)*i*Math.PI)).toFixed(4)) + "px";
+        }
+        //--------------------------------------------------------------------------------------
+
+
+        if(document.getElementById('circle_id').className == 'circle'){     // className == 'circle'
+
+          document.querySelector('#toggle_button').onclick = function(e) {
+            e.preventDefault();
+            document.querySelector('.circle').classList.toggle('open');
+          }
+          
+        }else {     // className == 'circle open'
+        document.querySelector('.circle').classList.toggle('open');
+      }
+
+      d3.select("#toggle_button")
+      .html(d.properties.name);
+
+
+      d3.select("#toggle").classed("hidden", false);
+      d3.select(".circle").style("display", "initial");
+              d3.select(".circle .icon-photoLook").style("display", "initial");
+
+        var cvflag = true;
+        var svflag = true;
+
+        if(visited_result === ''){
+          
+            d3.select(".circle .icon-photoLook").style("display", "none");
+        }
+
+        if(state == null){
+
+          <% following_visit_results.forEach( function(item, index){ %>
+            if(country.id == '<%= item.vp_nation_code %>') {
+              console.log("enter country.id == '<%= item.vp_nation_code %>'");
+
+              d3.select(".circle .icon-photoLook").style("display", "initial");
+              cvflag = false;
+            }else if(country.id != '<%= item.vp_nation_code %>' && cvflag == true){
+              console.log("country.id != '<%= item.vp_nation_code %>' && cvflag == true");
+
+              d3.select(".circle .icon-photoLook").style("display", "none");
+              cvflag = false;
+            }
+          <% }); %>
+
+        }else{
+
+          <% following_visit_results.forEach( function(item, index){ %>
+            if(state.properties.name == '<%= item.vp_city_name %>') {
+              console.log("state.properties.name == '<%= item.vp_city_name %>'");
+
+              d3.select(".circle .icon-photoLook").style("display", "initial");
+              svflag = false;
+            }else if(state.properties.name != '<%= item.vp_city_name %>' && svflag == true){
+              console.log("state.properties.name != '<%= item.vp_city_name %>' && svflag == true");
+
+              d3.select(".circle .icon-photoLook").style("display", "none");
+              svflag = false;
+            }
+          <% }); %>
+        }
+
+      }
+
+      function photoLook() {
+
+        var f = document.getElementById('goLink');
+
+
+        if(state == null){
+
+          f.nation_code.value = country.id;
+          f.user_id.value = '<%=following_user.id%>';
+          f.user_name.value = '<%=following_user.name%>';
+          f.action="/nation_photo_view";
+
+        }else {
+
+          f.nation_code.value = state.properties.adm0_a3;
+          f.user_id.value = '<%=following_user.id%>';
+          f.user_name.value = '<%=following_user.name%>';
+          f.city_name.value = state.properties.name;
+          f.action="/city_photo_view";
+
+        }
+
+        f.method="post";
+        f.submit();
+
+      }
+
+
+//--------------------------------- 뿅뿅뿅 애니메이션 깨끗하게 정리하는 코드 ---------------------------------
+      function clearToggle(){
+        d3.select("#toggle").classed("hidden", true);
+        d3.select(".circle").style("display", "none");
+      }
+
+//--------------------------------- 클릭 zoom에 관한 function ---------------------------------
+      function click_zoom(d){
+
+        var bounds = path.bounds(d),  // Computes the projected bounding box (in pixels) for the specified feature.
+        dx = bounds[1][0] - bounds[0][0],
+        dy = bounds[1][1] - bounds[0][1],
+        x = (bounds[0][0] + bounds[1][0]) / 2,
+        y = (bounds[0][1] + bounds[1][1]) / 2;
+
+
+        scale = .9 / Math.max(dx / width, dy / height); // x 값과 y 값 중에서 더 큰 걸 기준으로 해서 그만큼 확대한다.
+        translate = [width / 2 - scale * x, height / 2 - scale * y];
+
+        g.transition()
+        .duration(500)
+        .attr("transform", "translate(" + translate  + ")scale(" + scale + ")");
+
+      }
+
+
+//--------------------------------- 지도 리셋하는 function ---------------------------------
+      function reset() {
+        active.classed("active", false);
+        g.selectAll(".active").classed("active", false);
+        active = d3.select(null);
+
+        g.transition()
+        .duration(800)
+        .attr("transform", "translate([" + 0 + ", " + 0 + "])scale(" + width/10 + ")");
+
+        d3.event.transform = null;
+
+        zoom.translate([0, 0]).scale(1);
+      }
+
+//--------------------------------- 마우스 휠 zoom 관련한 function (현재 미사용) ---------------------------------
+      function zoomed() {
+
+        g.style("stroke-width", 0.5 / d3.event.scale + "px");
+        g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+
+        if(d3.event.scale == 1 && !state)
+          return reset();
+      }
+
+      </script>
+
+    </div>
+
+
+  </div>
+
+<!--=== Footer ===-->
+<div class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 md-margin-bottom-40">
+        <!-- About -->
+        <div class="headline"><h2><b>Photommaper 사용자 약관</b></h2></div>  
+        <p class="margin-bottom-25 md-margin-bottom-40">PhotoMapper is ~</p>    
+        <!-- End About -->
+      </div><!--/col-md-4-->  
+
+      <div class="col-md-4">
+        <!-- Contact Us -->
+        <div class="headline"><h2><b>주소 및 연락처</b></h2></div> 
+        <address class="md-margin-bottom-40">
+          잠실 향군타워 5층, sGen Club <br />
+          서울특별시 송파구 신천동 7-29 <br />
+          Phone: xxx xxx xxxx <br />
+          Fax: xxx xxx xxxx <br />
+        </address>
+        <!-- End Contact Us -->
+      </div><!--/col-md-4-->
+
+      <div class="col-md-4">
+       <!-- Social Links -->  
+       <div class="headline"><h2>링크</h2></div> 
+       <ul class="social-icons">
+        <li><a href="#" data-original-title="Feed" class="social_rss"></a></li>
+        <li><a href="#" data-original-title="Facebook" class="social_facebook"></a></li>
+        <li><a href="#" data-original-title="Twitter" class="social_twitter"></a></li>
+        <li><a href="#" data-original-title="Goole Plus" class="social_googleplus"></a></li>
+        <li><a href="#" data-original-title="Pinterest" class="social_pintrest"></a></li>
+        <li><a href="#" data-original-title="Linkedin" class="social_linkedin"></a></li>
+        <li><a href="#" data-original-title="Vimeo" class="social_vimeo"></a></li>
+      </ul>
+      <!-- End Social Links -->
+    </div>
+  </div>
+</div> 
+</div><!--/footer-->
+<!--=== End Footer ===-->
+<div class="copyright">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">  
+        <a href="/main">
+          <img class="pull-right" id="logo-footer" src="/images/menubar/PageLogoWhite.png" alt="Logo">
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">                     
+        <p>
+          2014 &copy; PhotoMapper. ALL Rights Reserved.
+        </p>
+      </div>
+    </div>
+  </div> 
+</div><!--/copyright--> 
+</div> <!-- wrapper end -->  
+ 
+</html>
+
+
+<script type="text/javascript" src="/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- JS Implementing Plugins -->
+<script type="text/javascript" src="/assets/plugins/back-to-top.js"></script>
+<script type="text/javascript" src="/assets/plugins/flexslider/jquery.flexslider-min.js"></script>
+<script type="text/javascript" src="/assets/plugins/parallax-slider/js/modernizr.js"></script>
+<script type="text/javascript" src="/assets/plugins/parallax-slider/js/jquery.cslider.js"></script>
+<script type="text/javascript" src="assets/plugins/fancybox/source/jquery.fancybox.pack.js"></script>
+<!-- JS Page Level -->           
+<script type="text/javascript" src="/assets/js/app.js"></script>
+<script type="text/javascript" src="/assets/js/pages/index.js"></script>
+<script type="text/javascript" src="/assets/plugins/counter/waypoints.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/counter/jquery.counterup.min.js"></script>   
+
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    App.init();
+    App.initSliders();
+    App.initFancybox();
+    Index.initParallaxSlider();  
+  });
+
+</script>
+
+</body>

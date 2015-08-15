@@ -1,0 +1,434 @@
+<!DOCTYPE html>  
+<html>
+<meta charset="utf-8">
+<head>
+  <title><%=title%></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="favicon.ico">
+
+  <!-- CSS Global Compulsory -->
+  <link rel="stylesheet" href="/assets/plugins/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+
+  <!-- CSS Implementing Plugins -->
+  <link rel="stylesheet" href="/assets/plugins/line-icons/line-icons.css">
+  <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/assets/plugins/flexslider/flexslider.css">     
+  <link rel="stylesheet" href="/assets/plugins/parallax-slider/css/parallax-slider.css">
+
+  <!-- CSS Page Style -->    
+  <link rel="stylesheet" href="assets/css/pages/portfolio-v1.css">
+
+  <!-- CSS Theme -->    
+  <link rel="stylesheet" href="/assets/css/themes/default.css" id="style_color">
+
+  <link rel="stylesheet" href="/stylesheets/photo_upload_style.css">
+  
+  <!-- CSS Customization -->
+  <link rel="stylesheet" href="/assets/css/custom.css">
+
+</head>
+<body>
+  <div id="tooltip_country" class="hidden">
+    <p><span id="county-label"></span></p>
+  </div>
+  <div id="tooltip_state" class="hidden">
+    <p><span id="state-label"></span></p>
+  </div>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script> 
+  <script src="/javascripts/jquery.form.js"></script> 
+  <script src="/javascripts/jquery.validate.min.js"></script>
+  <script src="/javascripts/exif.js"></script>
+
+  <div class="wrapper">
+    <div class="header">
+      <!-- "c:"는 URL 재작성(rewriting) 참조 : http://ultteky.egloos.com/10500310 -->
+
+      <!-- Navbar -->
+      <div class="navbar navbar-default" role="navigation">
+
+        <div class="navbar-header">
+          <% if (user) { %>
+          <a class="navbar-brand" href="/main">
+            <img id="logo-header" src="/images/menubar/PageLogoWhite.png" alt="Logo">
+          </a>
+          <% } else { %>
+          <a class="navbar-brand" href="/intro">
+            <img id="logo-header" src="/images/menubar/PageLogoWhite.png" alt="Logo">
+          </a>
+          <% } %> 
+        </div>
+
+        <div class="menu">
+
+          <div class="facebook-login">
+            <% if (user) { %>
+            <a href="/logout">
+              <button class="btn-facebook">
+                <i class="fa fa-facebook"></i> Logout
+              </button>
+            </a>
+            <div class="information">
+              <p class="welcome"> Welcome<br> <%= user.name %>'s photomapper</p>
+            </div>
+            <div class="picture">
+              <img src="http://graph.facebook.com/<%=user.id%>/picture">
+            </div>
+            <% } else { %>
+            <a href="/auth/facebook">
+              <button class="btn-facebook">
+                <i class="fa fa-facebook"></i> Login
+              </button>
+            </a>
+            <% } %> 
+          </div>
+
+          <% if (user) { %>
+
+          <!-- Setting -->
+            <ul class="nav navbar-nav">
+              <li id="setting">
+                <a href="/setting">
+                  <img src="/images/menubar/setting.png" alt="설정"> 
+                </a>
+              </li>
+            </ul>
+            <!-- End Setting -->
+
+            <!-- statistics view -->
+            <ul class="nav navbar-nav">
+              <li id="statistics">
+                <a href="/statistics">
+                  <!-- <img src="/images/menubar/full_photo.png" alt="내 사진 보기"> -->
+                  <i class="fa fa-bar-chart-o"></i>
+                </a>
+              </li>
+            </ul>
+            <!-- End statistics View -->
+
+            <!-- photo view -->
+            <ul class="nav navbar-nav">
+              <li id="photoView">
+                <a href="/all_photo_view">
+                  <img src="/images/menubar/full_photo.png" alt="내 사진 보기">
+                </a>
+              </li>
+            </ul>
+            <!-- End Photo View -->
+
+
+            <!-- Friend -->
+            <ul class="nav navbar-nav">
+              <li id="friend">
+                <a href="/all_following_world_map">
+                  <img src="/images/menubar/friend_map.png" alt="친구 지도 및 사진 보기">
+                </a>
+              </li>
+            </ul>
+            <!-- End Friend -->
+
+          <% } %> 
+
+        </div>
+        <!-- End menu -->
+
+
+        <!-- End Navbar -->
+      </div>        
+
+      <!-- header end -->
+    </div>
+
+    <script>
+
+    $(document).ready(function(){
+      document.getElementById("files").onchange = function(e) {
+        EXIF.getData(e.target.files[0], function() {
+          // alert(EXIF.pretty(this));
+          var MakeTmp = EXIF.getTag(this, "Make");
+          var ModelTmp = EXIF.getTag(this, "Model");
+          var DateTimeTmp = EXIF.getTag(this, "DateTime");
+
+          
+          var data = $("<input type='hidden' name='make_name' value='" + MakeTmp + "'/><input type='hidden'  name='model_name' value='" + ModelTmp + "'/><input type='hidden'  name='photo_date' value='" + DateTimeTmp + "'/>");
+          $(data).appendTo("#uploadForm");
+
+        });
+      }
+    });
+
+    </script>
+
+    <!--=== Breadcrumbs ===-->
+    <div class="breadcrumbs">
+      <div class="container">
+        <button class="btn btn-danger" onclick="#"><i class="fa fa-trash-o"></i> 삭제</button>
+        <form action="/upload" id="uploadForm" method="post" enctype="multipart/form-data">
+          <button style="float:right; margin-right:5px;" type="submit" class="btn btn-success"><i class="fa fa-external-link"></i> 업로드</button>
+          <input style="float:right; vertical-align:center;" type="text" name="nation_code" value="<%=photo_upload.nation_code%>" hidden/>
+          <input style="float:right; vertical-align:center;" type="text" name="city_name" value="<%=photo_upload.city_name%>" hidden/>
+          <input style="float:right; vertical-align:center;" type="text" name="visit_date" value="<%=photo_upload.visit_date%>" hidden/>
+          <input style="float:right; vertical-align:center;" type="file" name="upfile" id="files" accept="image/*" multiple />
+          <!--<input type="file" multiple accept="image/jpeg">-->
+        </form>
+      </div><!--/container-->
+      <div class="container">
+      </div>
+    </div><!--/breadcrumbs-->
+    <!--=== End Breadcrumbs ===-->
+
+    <!-- Selects -->
+    <script type="text/JavaScript"> 
+    function chkBox(bool) { // 전체선택/해제 
+      var obj = document.getElementsByName("chk[]"); 
+      for (var i=0; i<obj.length; i++) {
+        obj[i].checked = bool;
+      }  
+    } 
+  </script> 
+
+  <div class="container selects">
+    <INPUT type=checkbox onclick=chkBox(this.checked)> 전체선택
+    </div>
+
+    <!--<a href="javascript:chknone();">show</a> <== click Here-->
+
+
+    <!-- Selects End -->
+
+    <!-- Contents -->
+    <div class="container content portfolio-4-columns" style="margin-bottom:50px;">
+      <div class="row"> 
+        <div class="col-md-3 col-sm-6" overflow="hidden">
+          <div class="onephoto">
+              <INPUT class="checkbox_style" type="checkbox" name="chk[]" id="c1" value="1" hidden></INPUT>
+              <output class="thumb output_style" id="f1" name = "out[]" for="c1" value = "1"></output>
+          </div>   
+        </div>
+        <div class="col-md-3 col-sm-6" overflow="hidden">
+          <div class="onephoto">
+              <INPUT class="checkbox_style" type="checkbox" name="chk[]" id="c2" value="2" hidden></INPUT>
+              <output class="thumb output_style" id="f2" name = "out[]" for="c2" value = "2"></output>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6" overflow="hidden">
+          <div class="onephoto">
+              <INPUT class="checkbox_style" type="checkbox" name="chk[]" id="c3" value="3" hidden></INPUT>
+              <output class="thumb output_style" id="f3" name = "out[]" for="c3" value ="3"></output>
+          </div>   
+        </div>
+        <div class="col-md-3 col-sm-6" overflow="hidden">
+          <div class="onephoto">
+              <INPUT class="checkbox_style" type="checkbox" name="chk[]" id="c4" value="4" hidden></INPUT>
+              <output class="thumb output_style" id="f4"name = "out[]" for="c4" value = "4"></output>
+          </div>   
+        </div>
+      </div><!--/row-->
+
+      <div class="row"> 
+        <div class="col-md-3 col-sm-6" overflow="hidden">
+          <div class="onephoto">
+              <INPUT class="checkbox_style" type="checkbox" name="chk[]" id="c5" value="5" hidden></INPUT>
+              <output class="thumb output_style" id="f5" name = "out[]" for="c5" value = "5"></output>
+          </div>   
+        </div>
+        <div class="col-md-3 col-sm-6" overflow="hidden">
+          <div class="onephoto">
+              <INPUT class="checkbox_style" type="checkbox" name="chk[]" id="c6" value="6" hidden></INPUT>
+              <output class="thumb output_style" id="f6" name = "out[]" for="c6" value = "6"></output>
+          </div>   
+        </div>
+        <div class="col-md-3 col-sm-6" overflow="hidden">
+          <div class="onephoto">
+              <INPUT class="checkbox_style" type="checkbox" name="chk[]" id="c7" value="7" hidden></INPUT>
+              <output class="thumb output_style" id="f7" name = "out[]" for="c7" value = "7"></output>
+          </div>   
+        </div>
+        <div class="col-md-3 col-sm-6" overflow="hidden">
+          <div class="onephoto">
+              <INPUT class="checkbox_style" type="checkbox" name="chk[]" id="c8" value="8" hidden></INPUT>
+              <output class="thumb output_style" id="f8" name = "out[]" for="c8" value = "8"></output>
+          </div>   
+        </div>
+      </div><!--/row-->
+
+      <div class="row"> 
+        <div class="col-md-3 col-sm-6" overflow="hidden">
+          <div class="onephoto">
+             <INPUT class="checkbox_style" type="checkbox" name="chk[]" id="c9" value="9" hidden></INPUT>
+             <output class="thumb output_style" id="f9" name = "out[]" for="c9" value = "9"></output>
+         </div>   
+       </div>
+       <div class="col-md-3 col-sm-6" overflow="hidden">
+        <div class="onephoto">
+            <INPUT class="checkbox_style" type="checkbox" name="chk[]" id="c10" value="10"  hidden></INPUT>
+            <output class="thumb output_style" id="f10" name = "out[]" for="c10" value = "10"></output>
+        </div>   
+      </div>
+      <div class="col-md-3 col-sm-6" overflow="hidden">
+        <div class="onephoto">
+            <INPUT class="checkbox_style" type="checkbox" name="chk[]" id="c11" value="11" hidden></INPUT>
+            <output class="thumb output_style" id="f11" name = "out[]" for="c11" value = "11"></output>
+        </div>   
+      </div>
+      <div class="col-md-3 col-sm-6" overflow="hidden">
+        <div class="onephoto">
+            <INPUT class="checkbox_style" type="checkbox" name="chk[]" id="c12" value="12"  hidden></INPUT>
+            <output class="thumb output_style" id="f12" name = "out[]" for="c12" value = "12"></output>
+        </div>   
+      </div>
+<!--      
+<div class="mask info_style">
+  <a href="portfolio_item.html" class="info">사진 업로드</a>
+</div>
+-->       
+
+<!--
+            <div class="col-md-3 col-sm-6"> 
+                <div class="onephoto">
+                 이미지가 안 올라간 상태면 default 이미지 파일이 보이고, 아니면 올라간 이미지 파일이 보이도록
+                  <div>
+                    <img class="img-responsive" src="/images/none.png" alt="" />
+                  </div>
+                    <div class="mask">
+                        <input type="checkbox" name="select_each" value="select_each"> 
+                        <a style="margin-top:50px;" href="portfolio_item.html" class="info">사진 업로드</a>
+                    </div>                
+                </div>
+            </div>     
+          -->
+
+
+        </div><!--/row-->
+      </div>
+    </form>
+
+    <!-- Contents End -->
+
+    <!--=== Footer ===-->
+    <div class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 md-margin-bottom-40">
+            <!-- About -->
+            <div class="headline"><h2><b>About PhotoMapper</b></h2></div>  
+            <p class="margin-bottom-25 md-margin-bottom-40">PhotoMapper is ~</p>    
+            <!-- End About -->
+          </div><!--/col-md-4-->  
+
+          <div class="col-md-4">
+            <!-- Contact Us -->
+            <div class="headline"><h2><b>Contact Us</b></h2></div> 
+            <address class="md-margin-bottom-40">
+              잠실 향군타워 5층, sGen Club <br />
+              서울특별시 송파구 신천동 7-29 <br />
+              Phone: xxx xxx xxxx <br />
+              Fax: xxx xxx xxxx <br />
+            </address>
+            <!-- End Contact Us -->
+          </div><!--/col-md-4-->
+
+          <div class="col-md-4">
+           <!-- Social Links -->
+           <div class="headline"><h2>Social Networks</h2></div> 
+           <ul class="social-icons">
+            <li><a href="#" data-original-title="Feed" class="social_rss"></a></li>
+            <li><a href="#" data-original-title="Facebook" class="social_facebook"></a></li>
+            <li><a href="#" data-original-title="Twitter" class="social_twitter"></a></li>
+            <li><a href="#" data-original-title="Goole Plus" class="social_googleplus"></a></li>
+            <li><a href="#" data-original-title="Pinterest" class="social_pintrest"></a></li>
+            <li><a href="#" data-original-title="Linkedin" class="social_linkedin"></a></li>
+            <li><a href="#" data-original-title="Vimeo" class="social_vimeo"></a></li>
+          </ul>
+          <!-- End Social Links -->
+        </div>
+      </div>
+    </div> 
+  </div><!--/footer-->
+  <!--=== End Footer ===-->
+  <div class="copyright">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">  
+          <a href="/main">
+            <img class="pull-right" id="logo-footer" src="/images/menubar/PageLogoWhite.png" alt="Logo">
+          </a>
+        </div>
+        <div class="col-md-6">                     
+          <p>
+            2014 &copy; PhotoMapper. ALL Rights Reserved.
+          </p>
+        </div>
+      </div>
+    </div> 
+  </div><!--/copyright--> 
+</div> <!-- wrapper end -->
+
+<script type="text/javascript" src="/assets/plugins/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- JS Implementing Plugins -->
+<script type="text/javascript" src="/assets/plugins/back-to-top.js"></script>
+<script type="text/javascript" src="/assets/plugins/flexslider/jquery.flexslider-min.js"></script>
+<script type="text/javascript" src="/assets/plugins/parallax-slider/js/modernizr.js"></script>
+<script type="text/javascript" src="/assets/plugins/parallax-slider/js/jquery.cslider.js"></script>
+<!-- JS Page Level -->           
+<script type="text/javascript" src="/assets/js/app.js"></script>
+<script type="text/javascript" src="/assets/js/pages/index.js"></script>
+
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    App.init();
+    App.initSliders();
+    Index.initParallaxSlider();        
+  });
+</script>
+
+<script>
+  // function deleteFile(){
+  //   var chk = document.getElementsByName("chk[]");
+
+  //   for(var i=0; i<12; i++){
+  //     if(chk[i].checked){
+  //       console.log(chk[i].previousSibling);
+  //     }
+  //   }
+
+  // document.getElementById('files').addEventListener('change', deleteFile, false);
+  // }
+</script>
+<script>
+  var ii = 0;
+  var total=0;
+  function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+    // Loop through the FileList and render image files as thumbnails
+    for (var i = 0, f; f = files[i]; i++) {
+      var reader = new FileReader();
+      // Closure to capture the file information.
+      reader.onload = (function(theFile) {
+        return function(e) {
+         var obj = document.getElementsByName("chk[]");
+      // Only process image files.
+      obj[ii].style.display="initial";
+
+      console.log(i);
+          // Render thumbnail.
+          ii++;
+          var span = document.createElement('span');
+          span.innerHTML = ['<img class="thumb" src="', e.target.result,
+          '" title="', escape(theFile.name),'"/>'].join('');
+          document.getElementById("f" + (ii)).insertBefore(span, null);
+        };
+      })(f);
+      
+      // Read in the image file as a data URL.
+      reader.readAsDataURL(f);
+    }
+  }
+
+  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+</script>
+</body>
+</html>

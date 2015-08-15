@@ -1,0 +1,220 @@
+/*Setting Page
+------------------------------------*/
+/*Setting Header*/
+.setting-header {
+	color: #555;
+	overflow: hidden;
+	/*margin-bottom: 40px;*/
+}
+
+.setting-header h2 {
+	font-size: 30px;
+}
+
+.panel-title{
+	text-align: center;
+	font-family: "나눔고딕";
+	font-size: 20px;
+	color: #fff;
+}
+
+.profile_wrapper {
+	position: relative;
+	float: left;
+	padding-left: 1%;
+}
+
+.profile_wrapper .profile_image{
+	position: relative;
+	float: left;
+}
+
+.profile_wrapper .inner-team{
+	margin-left: 20px;
+	position: relative;
+	float: left;
+}
+
+/*#delete{
+	position: relative;
+	float: right;
+}*/
+
+.btn-danger {
+	float: left; 
+}
+
+.img-responsive {
+	/*display: block;
+	max-width: 100%;
+	height: auto;*/
+	padding-top: 12px;
+	position: relative;
+	float: left;
+}
+
+.table{
+	margin: auto;
+	text-align: left;
+}
+
+.panel-heading {
+	color: #555;
+	overflow: hidden;
+	margin-bottom: 40px;
+}
+
+.setting-header h1{
+	font-size: 20px;
+}
+
+.setting-header .setting-numb {
+	font-size: 16px;
+	text-align: center;
+}
+
+.setting-header .setting-numb span {
+	color: 777;
+	display: block;
+	font-size: 13px;
+}
+
+/*Setting Info*/
+.setting-info {
+	padding: 5%;
+	margin-bottom: 10px;
+	float: left;
+}
+
+.setting-info h2 {
+	color: #555;
+	font-size: 18px;
+}
+
+/* col-md-6 */
+.col-md-12{
+	float: left;	
+}
+
+.top{
+	float: left;
+}
+
+.bottom{
+	float: left;
+	margin-bottom: 5%;
+}
+
+.col-md-11{
+	margin-left: 5%;
+	float: left;	
+}
+
+.account-manager{
+	float: right;
+}
+
+.col-md-3 {
+	margin-left: 2%;
+	float: left;
+}
+
+.headline {
+	display: block;
+	margin: 10px 0 25px 0;
+	border-bottom: 1px dotted #4682b4;
+}
+
+.headline h3 {
+	border-bottom: 2px solid #1f3036;
+}
+
+
+.btn-u {
+	margin-left: 90px;
+	width: 50px;
+	height: 50px;
+}
+
+.btn-u.btn-u-lightgrey {
+	border: 1px solid transparent;
+	background: #61c3c3;
+}
+.btn-u.btn-u-lightgrey:hover {
+    background-color: #61c3c3;
+    opacity: .5;
+}
+
+.btn-u.btn-u-powderblue {
+	border: 1px solid transparent;
+	background: #619ac3;
+}
+.btn-u.btn-u-powderblue:hover {
+    background-color: #619ac3;
+    opacity: .5;
+}
+
+.btn-u.btn-u-palegoldenrod {
+	border: 1px solid transparent;
+	background: #8b61c3;
+}
+.btn-u.btn-u-palegoldenrod:hover {
+    background-color: #8b61c3;
+    opacity: .5;
+}
+
+.btn-u.btn-u-thistle {
+	border: 1px solid transparent;
+	background: #8baeba;
+}
+.btn-u.btn-u-thistle:hover {
+    background-color: #8baeba;
+    opacity: .5;
+}
+
+.btn-u.btn-u-lavender {
+	border: 1px solid transparent;
+	background: #b7c361;
+}
+.btn-u.btn-u-lavender:hover {
+    background-color: #b7c361;
+    opacity: .5;
+}
+
+.btn-u.btn-u-lightpink {
+	border: 1px solid transparent;
+	background: #61c38f;
+}
+.btn-u.btn-u-lightpink:hover {
+    background-color: #61c38f;
+    opacity: .5;
+}
+
+.btn-u.btn-u-darkorange {
+	border: 1px solid transparent;
+	background: #929292;
+}
+.btn-u.btn-u-darkorange:hover {
+    background-color: #929292;
+    opacity: .5;
+}
+
+.backgroud{
+	fill: none;
+	pointer-events: all;
+}
+
+#countries { /* 대륙 */
+	fill: #D1EEEE;
+}
+
+#borders { /* 나라 경계 */
+	fill: none;
+    stroke: #fff;
+    stroke-width: 0.5;
+}
+
+p, li, li a {
+	color: #fff;
+}
+

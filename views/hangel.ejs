@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+  <title><%=title%></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="favicon.ico">
+
+  <!-- CSS Global Compulsory -->
+  <link rel="stylesheet" href="/assets/plugins/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+
+  <!-- CSS Implementing Plugins -->
+  <link rel="stylesheet" href="/assets/plugins/line-icons/line-icons.css">
+  <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/assets/plugins/flexslider/flexslider.css">     
+  <link rel="stylesheet" href="/assets/plugins/parallax-slider/css/parallax-slider.css">
+
+  <!-- CSS Theme -->    
+  <link rel="stylesheet" href="/assets/css/themes/default.css" id="style_color">
+
+  <link rel="stylesheet" href="/stylesheets/main_style.css">
+  
+  <!-- CSS Customization -->
+  <link rel="stylesheet" href="/assets/css/custom.css">
+
+  <script src="/javascripts/jquery-1.9.1.min.js" type="text/javascript"></script> <!-- 동그라미 나열 -->
+  <!-- here calender links -->
+  <link rel="stylesheet" href="/calendar/jquery-ui.css" />
+  <link rel="stylesheet" href="/calendar/style.css" />
+  <script src="/calendar/jquery-1.9.1.js"></script>
+  <script src="/calendar/jquery-ui.js"></script>
+  <!-- end calender links -->
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $(".icon-photoLook, .icon-coloringIcon,.icon-photoUpIcon ,#toggle_button, .icon-infomation, .canvas:not('.circle .icon-gashipYo')").click(function(e){  //배경을 클릭하면 레이어를 사라지게 하는 이벤트 핸들러
+        $("#calender").fadeOut();
+        e.preventDefault();
+        console.log("clicked");
+      });
+    });
+  </script>
+</head>
+<body>
+  <div id="tooltip_country" class="hidden">
+    <p><span id="county-label"></span></p>
+  </div>
+  <div id="tooltip_state" class="hidden">
+    <p><span id="state-label"></span></p>
+  </div>
+
+  <script src="javascripts/d3.v3.min.js"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+  
+  <div class="wrapper">
+    <div class="header">
+      <!-- "c:"는 URL 재작성(rewriting) 참조 : http://ultteky.egloos.com/10500310 -->
+      <!-- Navbar -->
+      <div class="navbar navbar-default" role="navigation">
+        <div class="container">
+
+          <div class="navbar-header">
+            <% if (user) { %>
+            <a class="navbar-brand" href="/main">
+              <img id="logo-header" src="/images/menubar/PageLogoWhite.png" alt="Logo">
+            </a>
+            <% } else { %>
+            <a class="navbar-brand" href="/intro">
+              <img id="logo-header" src="/images/menubar/PageLogoWhite.png" alt="Logo">
+            </a>
+            <% } %> 
+          </div>
+
+          <div class="menu">
+
+            <div class="facebook-login">
+              <% if (user) { %>
+              <a href="/logout">
+                <button class="btn-facebook">
+                  <i class="fa fa-facebook"></i> Logout
+                </button>
+              </a>
+              <div class="information">
+                <p class="welcome"> Welcome<br> <%= user.name %>'s photomapper</p>
+              </div>
+              <div class="picture">
+                <img src="http://graph.facebook.com/<%=user.id%>/picture">
+              </div>
+              <% } else { %>
+              <a href="/auth/facebook">
+                <button class="btn-facebook">
+                  <i class="fa fa-facebook"></i> Login
+                </button>
+              </a>
+              <% } %> 
+            </div>
+
+            <% if (user) { %>
+
+            <!-- Setting -->
+            <ul class="nav navbar-nav">
+              <li id="setting">
+                <a href="/setting">
+                  <img src="/images/menubar/setting.png" alt="설정"> 
+                </a>
+              </li>
+            </ul>
+            <!-- End Setting -->
+
+            <!-- photo view -->
+            <ul class="nav navbar-nav">
+              <li class="dropdown" id="photoView">
+                <a href="javascript:void(0);">
+                  <img src="/images/menubar/full_photo.png" alt="내 사진 보기">
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="/city_photo_view"><i class="fa fa-picture-o"></i> 도시별 사진 보기</a></li>
+                  <li><a href="/nation_photo_view"><i class="fa fa-picture-o"></i> 국가별 사진 보기</a></li>
+                  <li><a href="/all_photo_view"><i class="fa fa-picture-o"></i> 전체 사진 보기</a></li>
+                </ul>
+              </li>
+            </ul>
+            <!-- End Photo View -->
+
+
+            <!-- End Photo View -->
+            <ul class="nav navbar-nav">
+              <li class="dropdown" id="friend">
+                <a href="javascript:void(0);">
+                  <img src="/images/menubar/friend_map.png" alt="친구 지도 및 사진 보기">
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="/friend_photo_view"><i class="fa fa-picture-o"></i> 친구 사진보기</a></li>
+                  <li><a href="/friend_world_view"><i class="fa fa-globe"></i> 친구 지도보기</a></li>
+                </ul>
+              </li>
+            </ul>
+            <!-- End Friend -->
+
+            <!-- Search -->
+            <div class="input-group">
+              <div class="input-group animated fadeInDown">
+                <form class="search_form" action="/search" method="post">
+                  <input type="text" class="form-control" name="search_content" placeholder="국가/주/도시 찾기">
+                  <span class="input-group-btn">
+                    <button class="btn-u" type="submit"><img src="/images/menubar/search.png"></button>
+                  </span>
+                </form>
+              </div>
+            </div>
+            <!-- End Search -->
+
+            <% } %> 
+
+          </div>
+          <!-- End menu -->
+
+          <!-- End Container -->
+        </div>    
+
+        <!-- End Navbar -->
+      </div>        
+      <!-- header end -->
+    </div>  
+
+    <!-- layerpopup start -->
+    <script type="text/javascript">
+      function move_box(an, box, formid) {
+        var id = formid;
+        var cleft = 0;  //왼쪽마진  
+        var ctop = -90;  //상단마진
+        if(id == "calender"){
+          ;
+        }else if (id == "slideshow"){
+          cleft = -350;
+        }
+
+        var obj = an;
+
+        while (obj.offsetParent) {
+          cleft += obj.offsetLeft;
+          ctop += obj.offsetTop;
+          obj = obj.offsetParent;
+        }
+
+        box.style.left = cleft + 'px';
+
+        ctop += an.offsetHeight + 8;
+
+        if (document.body.currentStyle &&
+          document.body.currentStyle['marginTop']) {
+          ctop += parseInt(
+            document.body.currentStyle['marginTop']);
+      }
+      box.style.top = ctop + 'px';
+      console.log('move_box');
+    }
+
+    function show_hide_box(an, width, height, idvalues){
+      var formid = idvalues;
+      var contents = document.getElementById(formid);  
+
+      if (contents != null) {
+        if (contents.style.display=='none') {
+          move_box(an, contents, formid);
+          contents.align = 'left';
+          contents.style.position = 'absolute';
+          contents.style.width = width + 'px';
+          contents.style.height = height + 'px';
+          contents.style.display='block';
+          console.log(contents);
+        } else{
+          contents.style.display='none';
+        }
+        return false;
+      }  
+      return false;
+    }
+    /* layerpopup. js end */
+  </script>
+  <div class="content">
+    <div id="toggle" class="hidden">
+      <a id="toggle_button"></a>
+      <div class="circle">
+        <a href="javascript:void();" class="icon-photoLook"><img src=".\images\photoLook.png"></a>
+        <a href="#" onClick="return show_hide_box(this,280,240,'calender')" 
+        class="icon-gashipYo"><img src=".\images\gashipYo.png"></a>
+        <a href="javascript:void();" class="icon-coloringIcon"><img src=".\images\coloringIcon.png"></a>
+        <a href="javascript:void();" class="icon-photoUpIcon"><img src=".\images\photoUpIcon.png"></a>
+        <a href="#" onClick="return show_hide_box(this,340,170,'slideshow')" 
+        class="icon-infomation"><img src=".\images\infomation.png"></a>
+      </div> <!-- circle -->
+    </div> <!-- toggle -->
+  </div> <!-- content -->
+</div> <!-- wrapper -->
+
+<!-- calender -->
+<div id = "calender" style="OVERFLOW:hidden; display:none";>
+  <script>
+    $(function() {  
+      $( "#datepicker" ).datepicker({  
+            // 달력 아이콘  
+            showOn: "button",
+            buttonImage: "/calendar/calendar.gif",  
+            buttonImageOnly: false, // 이미지 클릭해야만 뜨는거  
+
+            // 달력 하단의 종료와 오늘 버튼 Show  
+            showButtonPanel: true,  
+            // date 포멧  
+            dateFormat : "yy/mm/dd",  
+            // 달력 에니메이션 ( show(default),slideDown,fadeIn,blind,bounce,clip,drop,fold,slide,"")  
+            showAnim : "",  
+            // 다른 달의 일 보이기, 클릭 가능  
+            showOtherMonths: true,  
+            selectOtherMonths: true,  
+            // 년도, 달 변경  
+            changeMonth: true,  
+            changeYear: true,   
+            // 여러달 보이기  
+            numberOfMonths: 1,  
+            showButtonPanel: true,
+            // 달력 선택 제한 주기(min: 현재부터 -20일,max:현재부터 +1달+10일)  
+            // minDate: -20,  
+            // maxDate: "+1M +10D",  
+            // 주차 보여주기  
+            // showWeek: true,  
+            firstDay: 1  ,
+            showMonthAfterYear: true
+          });
+    });  
+</script>
+<p>
+<div id="datepicker">
+ <input type="text" size="10"  id="datepicker_text" placeholder="2014/08/14" />
+  <button type="button" onclick="gashipyo();" id="done">done</button>
+</p>
+</div>
+</div>
+<!-- slide javascript -->
+<script type="text/javascript">
+  $(document).ready(function(){
+    var currentPosition = 0;
+    var slideWidth = 280;
+    var slides = $('.slide');
+    var numberOfSlides = slides.length;
+    // Remove scrollbar in JS
+    $('#slidesContainer').css('overflow', 'hidden');
+
+    // Wrap all .slides with #slideInner div
+    slides
+    .wrapAll('<div id="slideInner"></div>')
+      // Float left to display horizontally, readjust .slides width
+      .css({
+        'float' : 'left',
+        'width' : slideWidth
+      });
+
+    // Set #slideInner width equal to total width of all slides
+    $('#slideInner').css('width', slideWidth * numberOfSlides);
+
+    // Insert controls in the DOM
+    $('#slideshow')
+    .prepend('<span class="control" id="leftControl">Clicking moves left</span>')
+    .append('<span class="control" id="rightControl">Clicking moves right</span>');
+
+    // Hide left arrow control on first load
+    manageControls(currentPosition);
+
+    // Create event listeners for .controls clicks
+    $('.control')
+    .bind('click', function(){
+      // Determine new position
+      currentPosition = ($(this).attr('id')=='rightControl') ? currentPosition+1 : currentPosition-1;
+      
+    // Hide / show controls
+    manageControls(currentPosition);
+      // Move slideInner using margin-left
+      $('#slideInner').animate({
+        'marginLeft' : slideWidth*(-currentPosition)
+      });
+    });
+
+  // manageControls: Hides and Shows controls depending on currentPosition
+  function manageControls(position){
+    // Hide left arrow if position is first slide
+    if(position==0){ $('#leftControl').hide() } else{ $('#leftControl').show()}
+  // Hide right arrow if position is last slide
+if(position==numberOfSlides-1){ $('#rightControl').hide() } else{ $('#rightControl').show() }
+} 
+});
+</script>
+
+<div id="slideshow" style="OVERFLOW:hidden; display:none;">
+ <style>
+  /* slide style*/
+  .slide {
+    float: left;
+  }
+  .arc path {
+    stroke: #fff;
+  }
+  /* season style end*/
+  /* age style add */
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+  .bar {
+    fill: steelblue;
+  }
+  .x.axis path {
+    display: none;
+  }
+  /* age style end*/
+  #slideshow {
+    margin:0 auto;
+    width:340px;
+    height:170px;
+    background-color: white;
+    /*background:transparent url(img/bg_slideshow.jpg) no-repeat 0 0;*/
+    position:relative;
+    float: left;
+  }
+  #slideshow #slidesContainer {
+    margin:0 auto;
+    width:260px;
+    height:170px;
+    overflow:auto; /* allow scrollbar */
+    position:relative;
+  }
+  #slideshow #slidesContainer .slide {
+    margin:0 auto;
+    width:240px; 
+    height:170px;
+    position: relative;
+  }
+  .control {
+    display:block;
+    width:39px;
+    height:170px;
+    text-indent:-10000px;
+    position:absolute;
+    cursor: pointer;
+  }
+  #leftControl {
+    top:0;
+    left:0;
+    background:transparent url(/images/slide/control_left.jpg) no-repeat 0 0;
+  }
+  #rightControl {
+    top:0;
+    right:0;
+    background:transparent url(/images/slide/control_right.jpg) no-repeat 0 0;
+  }
+  * {
+    margin:0;
+    padding:0;
+    font:normal 11px Verdana, Geneva, sans-serif;
+    color:#ccc;
+  }
+  /* slide style end*/
+</style>
+<div id="slidesContainer">
+  <div class="slide" id="age">
+    <!-- 나이 ,  연령별 -->
+    <style>
+      /* age style*/
+      #age {
+        font: 10px sans-serif;
+      }
+      .axis path,
+      .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+      }
+      .bar {
+        fill: steelblue;
+      }
+      .x.axis path {
+        display: none;
+      }
+      /* age style end*/
+    </style>
+    <script>
+     var age_margin = {top: 20, right: 20, bottom: 30, left: 40},
+     age_width = 260 - age_margin.left - age_margin.right,
+     age_height = 165 - age_margin.top - age_margin.bottom;
+
+     var age_x0 = d3.scale.ordinal()
+     .rangeRoundBands([0, age_width], .1);
+
+     var age_x1 = d3.scale.ordinal();
+
+     var age_y = d3.scale.linear()
+     .range([age_height, 0]);
+
+     var color_age = d3.scale.ordinal()
+     .range(["#f3af6d", "#6197c3"]);
+
+     var xAxis = d3.svg.axis()
+     .scale(age_x0)
+     .orient("bottom");
+
+     var yAxis = d3.svg.axis()
+     .scale(age_y)
+     .orient("left")
+     .tickFormat(d3.format(".2s"));
+
+     var svg_age = d3.select("#age").append("svg")
+     .attr("width", age_width + age_margin.left + age_margin.right)
+     .attr("height", age_height + age_margin.top + age_margin.bottom)
+     .append("g")
+     .attr("transform", "translate(" + age_margin.left + "," + age_margin.top + ")");
+
+     d3.csv("data/age.csv", function(error, data) {
+
+      var ageNames = d3.keys(data[0]).filter(function(key) { return key !== "age"; });
+
+      data.forEach(function(d) {
+        d.ages = ageNames.map(function(name) { return {name: name, value: +d[name]}; });
+      });
+
+      age_x0.domain(data.map(function(d) { return d.age; }));
+      age_x1.domain(ageNames).rangeRoundBands([0, age_x0.rangeBand()]);
+      age_y.domain([0, d3.max(data, function(d) { return d3.max(d.ages, function(d) { return d.value; }); })]);
+
+      svg_age.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + age_height + ")")
+      .call(xAxis);
+
+      svg_age.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("num");
+
+      var age = svg_age.selectAll(".age")
+      .data(data)
+      .enter().append("g")
+      .attr("class", "g")
+      .attr("transform", function(d) { return "translate(" + age_x0(d.age) + ",0)"; });
+
+      age.selectAll("rect")
+      .data(function(d) { return d.ages; })
+      .enter().append("rect")
+      .attr("width", age_x1.rangeBand())
+      .attr("x", function(d) { return age_x1(d.name); })
+      .attr("y", function(d) { return age_y(d.value); })
+      .attr("height", function(d) { return age_height - age_y(d.value); })
+      .style("fill", function(d) { return color_age(d.name); });
+
+      var legend = svg_age.selectAll(".legend")
+      .data(ageNames.slice().reverse())
+      .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+      legend.append("rect")
+      .attr("x", age_width - 18)
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", color_age);
+
+      legend.append("text")
+      .attr("x", age_width - 24)
+      .attr("y", 9)
+      .attr("dy", ".35em")
+      .style("text-anchor", "end")
+      .text(function(d) { return d; });
+    });
+</script>
+</div>
+<div class="slide" id="season">
+  <style>
+    #season {
+      font: 10px sans-serif;
+    }
+  </style>
+  <script>
+    var width = 260,
+    height = 165,
+    radius = Math.min(width, height) / 2;
+
+    var color_season = d3.scale.ordinal()
+    .range(["#d0e68f", "#f5b75a", "#543d4d", "#2e4c7a"]);
+
+    var arc = d3.svg.arc()
+    .outerRadius(radius - 10)
+    .innerRadius(radius - 70);
+
+    var pie = d3.layout.pie()
+    .sort(null)
+    .value(function(d) { return d.num; });
+
+    var svg_season = d3.select("#season").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+    d3.csv("data/season.csv", function(error, data) {
+      data.forEach(function(d) {
+        d.num = +d.num;
+      });
+
+      var g = svg_season.selectAll(".arc")
+      .data(pie(data))
+      .enter().append("g")
+      .attr("class", "arc");
+
+      g.append("path")
+      .attr("d", arc)
+      .style("fill", function(d) { return color_season(d.data.season); });
+
+      g.append("text")
+      .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+      .attr("dy", ".35em")
+      .style("text-anchor", "middle")
+      .text(function(d) { return d.data.season; });
+    });
+  </script>
+</div><!-- 계절별 -->
+<div class="slide" id="city">
+  그 국가에서 가장 많이 방문한 도시
+</div><!-- 도시별 -->
+</div>
+</div>
+
+
+<div class="canvas">
+  <script>
+    var width = screen.width,
+    height = (screen.height*3)/4,
+    active = d3.select(null);
+
+    var country, state;
+
+    var flag = 0;
+
+    var pro = d3.geo.mercator()
+    .scale(width/10)
+    .translate([width/2, height*7/10]);
+
+    var path = d3.geo.path()
+    .projection(pro);
+
+      var zoom = d3.behavior.zoom() // Constructs a new zoom behavior
+          .scaleExtent([1, 20]) // Specifies the zoom scale's allowed range as a two-element array, [minimum, maximum]
+          .on("zoom", zoomed);
+
+          var svg = d3.select(".canvas").append("svg")
+          .attr("width", width)
+          .attr("height", height);
+          // .call(zoom);
+        //.call(drag);
+
+        svg.append("rect")
+        .attr("class", "background")
+        .attr("width". width)
+        .attr("height", height)
+        .on("mousedown", mouseDown)
+        .on("mouseMove", mouseMove)
+        .on("mouseUp", country_clicked)
+        .on("mouseover", getContryNames)
+        .on("mouseout", clearCountryNames)
+        .on("mouseover", getStateNames)
+        .on("mouseout", clearStateNames);
+
+
+        var tooltip = d3.select("canvas").append("div")
+        .attr("class", "tooltip");
+
+        var toggle = d3.select("canvas").append("div")
+        .attr("id", "toggle");
+
+      var g = svg.append("g");  // g : group for svg
+
+
+      var nation_code = '<%= result.nation_code %>';
+      console.log("world map : " + nation_code);
+
+      if(nation_code == 'undefined'){
+        d3.json("/json/world.json", function(error, world) {
+          if (error) return console.error(error);
+
+          g.append("g")
+          .attr("class", "countries")
+          .selectAll("path")
+          .data(topojson.feature(world, world.objects.countries).features)
+          .enter().append("path")
+              .attr("d", path)  // shape of an SVG Path element is defined in "d"
+              .attr("title", function(d,i) { return d.name; })
+              .on("mouseup", country_clicked) // mousedown 이벤트가 일어났을 시에는 clicked 함수로 가란 뜻
+              .on("mouseover", getContryNames) // mouseover 이벤트가 일어났을 시에는 getContryNames 함수로 가란 뜻
+              .on("mouseout", clearCountryNames)
+              .on("mousedown", mouseDown)
+              .on("mousemove", mouseMove);
+
+              g.append("path")
+              .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
+              .attr("class", "borders")
+              .attr("d", path);
+            });
+      }
+
+      function getContryNames(d){
+        var xPosition = d3.select(this).attr("x");
+        var yPosition = d3.select(this).attr("y");
+
+        //Update the tooltip position and value
+        d3.select("#tooltip_country")
+          //Show the tooltip above where the mouse triggers the event
+          .style("left", (d3.event.pageX - 70) + "px")     
+          .style("top", (d3.event.pageY - 70) + "px")
+          .select("#county-label")  
+          .html("<strong>" + d.properties.name + "</strong>" + "<br/>");
+
+        //Show the tooltip
+        d3.select("#tooltip_country").classed("hidden", false);
+      }
+
+      function clearCountryNames(d){
+        d3.select("#tooltip_country").classed("hidden", true);
+      }
+
+      function getStateNames(d){
+        var xPosition = d3.select(this).attr("x");
+        var yPosition = d3.select(this).attr("y");
+
+        //Update the tooltip position and value
+        d3.select("#tooltip_state")
+          //Show the tooltip above where the mouse triggers the event
+          .style("left", (d3.event.pageX - 70) + "px")     
+          .style("top", (d3.event.pageY - 70) + "px")
+          .select("#state-label")  
+          .html("<strong>" + d.properties.name + "</strong>" + "<br/>");
+
+        //Show the tooltip
+        d3.select("#tooltip_state").classed("hidden", false);
+      }
+
+      function clearStateNames(d){
+        d3.select("#tooltip_state").classed("hidden", true);
+      }
+
+      function mouseDown(){   // dragging check
+        flag = 0;
+      }
+
+
+      function mouseMove(){   // dragging check
+        flag = 1;
+      }
+
+      // 나라 클릭하면 그 나라 지도로 넘어가는 코드 
+      function country_clicked(d){
+
+        if (flag === 0){  // dragging check  -> 드래그를 한 뒤 마우스를 뗄 때 country_clicked function이 작동하는 것 방지
+
+          var name = d.properties.name;
+          var code = d.id;
+          var filename = "/json/states/"+code+".json";
+
+          g.selectAll(".active").classed("active", false);
+
+          g.selectAll(".state").remove();
+          g.selectAll(".countries").style('display', 'none');
+
+          if (d && country !== d) {
+            country = d;
+            state = null;
+
+            d3.json(filename, function(error, state) {
+
+              if (error) return console.error(error);
+
+              g.append("g")
+              .attr("class", "state")
+              .selectAll("path")
+              .data(topojson.feature(state, state.objects.layer1).features)
+              .enter().append("path")
+                  .attr("d", path)  // shape of an SVG Path element is defined in "d"
+                  .attr("title", function(d,i) { return d.gn_name; })
+                  // .attr("class", "active")
+                  .on("mouseup", state_clicked) // mousedown 이벤트가 일어났을 시에는 clicked 함수로 가란 뜻
+                  .on("mouseover", getStateNames) // mouseover 이벤트가 일어났을 시에는 getContryNames 함수로 가란 뜻
+                  .on("mouseout", clearStateNames)
+                  .on("mousedown", mouseDown)
+                  .on("mousemove", mouseMove);
+
+                });
+
+
+            click_zoom(d);
+            zoom.translate(translate).scale(scale);
+
+            getToggle(d); // 뿅뿅뿅 애니메이션을 불러오는 function
+
+          } else {
+            country = null;
+            g.selectAll(".countries").style('display', 'initial');
+            zoom.translate([0, 0]).scale(1);
+
+          clearToggle(); // 뿅뿅뿅 애니메이션을 없애는 function
+
+          reset();
+        }
+
+        }else if(flag === 1){ // dragging check
+          flag = 0;
+        }
+
+      }
+
+
+      // 주나 도시를 클릭했을 시에 확대되는 코드
+      function state_clicked(d){
+
+        if (flag === 0){ // dragging check
+          if (d && state !== d) {
+            clearStateNames(d);
+
+            state = d;
+
+            active.classed("active", false);
+            active = d3.select(this).classed("active", true);
+
+
+            // g.attr("class", "city").attr("class", "active");
+
+            click_zoom(d);
+            getToggle(d); // 뿅뿅뿅 애니메이션을 불러오는 function
+            
+          } else {
+            state = null;
+            g.selectAll(".state").style('display', 'none');
+            g.selectAll(".countries").style('display', 'initial');
+            zoom.translate([0, 0]).scale(1);
+
+            clearToggle(); // 뿅뿅뿅 애니메이션을 없애는 function
+
+            reset();
+          }
+        }else if(flag === 1){ // dragging check
+          flag = 0;
+        }
+
+
+      }
+
+      // 검색했을 시에 확대되는 코드
+      function search_country(){
+
+        console.log("enter the search_country");
+
+        console.log("search map : " + nation_code);
+
+        if(nation_code != 'undefined'){
+
+          var filename = "/json/states/"+nation_code+".json";
+
+          g.selectAll(".active").classed("active", false);
+
+          g.selectAll(".state").remove();
+          g.selectAll(".countries").style('display', 'none');
+
+          d3.json(filename, function(error, state) {
+
+            if (error) return console.error(error);
+
+            g.append("g")
+            .attr("class", "state")
+            .selectAll("path")
+            .data(topojson.feature(state, state.objects.layer1).features)
+            .enter()
+            .append("path")
+                .attr("d", path)  // shape of an SVG Path element is defined in "d"
+                .attr("title", function(d,i) { return d.gn_name; })
+                .attr("class", "active")
+                .on("mouseup", state_clicked) // mousedown 이벤트가 일어났을 시에는 clicked 함수로 가란 뜻
+                .on("mouseover", getStateNames) // mouseover 이벤트가 일어났을 시에는 getContryNames 함수로 가란 뜻
+                .on("mouseout", clearStateNames)
+                .on("mousedown", mouseDown)
+                .on("mousemove", mouseMove);
+
+              });
+
+          search_zoom();
+          zoom.translate(translate).scale(scale);
+
+        }
+
+      }
+
+      function search_zoom(){
+
+        var bounds = path.bounds(d),  // Computes the projected bounding box (in pixels) for the specified feature.
+        dx = bounds[1][0] - bounds[0][0],
+        dy = bounds[1][1] - bounds[0][1],
+        x = (bounds[0][0] + bounds[1][0]) / 2,
+        y = (bounds[0][1] + bounds[1][1]) / 2;
+
+        scale = .9 / Math.max(dx / width, dy / height); // x 값과 y 값 중에서 더 큰 걸 기준으로 해서 그만큼 확대한다.
+        translate = [width / 2 - scale * x, height / 2 - scale * y];
+
+        console.log(scale);
+        console.log(translate);
+
+        g.transition()
+        .duration(750)
+        .attr("transform", "translate(" + translate  + ")");
+
+      }
+
+
+
+      function click_zoom(d){
+
+        var bounds = path.bounds(d),  // Computes the projected bounding box (in pixels) for the specified feature.
+        dx = bounds[1][0] - bounds[0][0],
+        dy = bounds[1][1] - bounds[0][1],
+        x = (bounds[0][0] + bounds[1][0]) / 2,
+        y = (bounds[0][1] + bounds[1][1]) / 2;
+
+
+        scale = .9 / Math.max(dx / width, dy / height); // x 값과 y 값 중에서 더 큰 걸 기준으로 해서 그만큼 확대한다.
+        translate = [width / 2 - scale * x, height / 2 - scale * y];
+
+        g.transition()
+        .duration(500)
+        .attr("transform", "translate(" + translate  + ")scale(" + scale + ")");
+
+      }
+
+      function getToggle(d){ // 뿅뿅뿅 애니메이션을 불러오는 function
+
+        var bounds = path.bounds(d), 
+        dx = bounds[1][0] - bounds[0][0],
+        dy = bounds[1][1] - bounds[0][1];
+
+        d3.select("#toggle_button")
+        .style("left", (width/2 - dx - 40) + "px")
+        .style("top", (height/2 - dy - 40) + "px");
+
+
+
+        //////////////////// 원 모양으로 퍼지는 코드 ////////////////////////
+        var items = document.querySelectorAll('.circle a');
+
+        for(var i = 0, l = items.length; i < l; i++) {
+          items[i].style.left = (((width/2 - dx) - 80*Math.cos(-0.5 * Math.PI - 2*(1/l)*i*Math.PI))) + "px";
+          
+          items[i].style.top = (((height/2 - dy) + 80*Math.sin(-0.5 * Math.PI - 2*(1/l)*i*Math.PI))) + "px";
+        }
+        ///////////////////////////////////////////////////////////////
+
+
+
+        document.querySelector('#toggle_button').onclick = function(e) {
+         e.preventDefault();
+         document.querySelector('.circle').classList.toggle('open');
+       }
+
+
+       d3.select("#toggle_button")
+       .html(d.properties.name);
+
+
+       d3.select("#toggle").classed("hidden", false);
+       d3.select(".circle").style("display", "initial");
+
+     }
+
+      function clearToggle(){ // 뿅뿅뿅 애니메이션 깨끗하게 정리하는 코드
+        d3.select("#toggle").classed("hidden", true);
+        d3.select(".circle").style("display", "none");
+        // document.querySelector('.circle').classList.toggle('open');
+      }
+
+      function reset() {
+        active.classed("active", false);
+        g.selectAll(".active").classed("active", false);
+        active = d3.select(null);
+
+        g.transition()
+        .duration(800)
+        .attr("transform", "translate([" + 0 + ", " + 0 + "])scale(" + width/10 + ")");
+
+        d3.event.transform = null;
+
+        zoom.translate([0, 0]).scale(1);
+      }
+
+      function zoomed() {
+
+        g.style("stroke-width", 0.5 / d3.event.scale + "px");
+        g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+
+        if(d3.event.scale == 1 && !state)
+          return reset();
+      }
+
+    </script>
+  </div>
+</div>
+
+<!--=== Footer ===-->
+<div class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 md-margin-bottom-40">
+        <!-- About -->
+        <div class="headline"><h2><b>About PhotoMapper</b></h2></div>  
+        <p class="margin-bottom-25 md-margin-bottom-40">PhotoMapper is ~</p>    
+        <!-- End About -->
+      </div><!--/col-md-4-->  
+
+      <div class="col-md-4">
+        <!-- Contact Us -->
+        <div class="headline"><h2><b>Contact Us</b></h2></div> 
+        <address class="md-margin-bottom-40">
+          잠실 향군타워 5층, sGen Club <br />
+          서울특별시 송파구 신천동 7-29 <br />
+          Phone: xxx xxx xxxx <br />
+          Fax: xxx xxx xxxx <br />
+        </address>
+        <!-- End Contact Us -->
+      </div><!--/col-md-4-->
+
+      <div class="col-md-4">
+       <!-- Social Links -->  
+       <div class="headline"><h2>Social Networks</h2></div> 
+       <ul class="social-icons">
+        <li><a href="#" data-original-title="Feed" class="social_rss"></a></li>
+        <li><a href="#" data-original-title="Facebook" class="social_facebook"></a></li>
+        <li><a href="#" data-original-title="Twitter" class="social_twitter"></a></li>
+        <li><a href="#" data-original-title="Goole Plus" class="social_googleplus"></a></li>
+        <li><a href="#" data-original-title="Pinterest" class="social_pintrest"></a></li>
+        <li><a href="#" data-original-title="Linkedin" class="social_linkedin"></a></li>
+        <li><a href="#" data-original-title="Vimeo" class="social_vimeo"></a></li>
+      </ul>
+      <!-- End Social Links -->
+    </div>
+  </div>
+</div> 
+</div><!--/footer-->
+<!--=== End Footer ===-->
+<div class="copyright">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">  
+        <a href="/main">
+          <img class="pull-right" id="logo-footer" src="/images/menubar/PageLogoWhite.png" alt="Logo">
+        </a>
+      </div>
+      <div class="col-md-6">                     
+        <p>
+          2014 &copy; PhotoMapper. ALL Rights Reserved.
+        </p>
+      </div>
+    </div>
+  </div> 
+</div><!--/copyright--> 
+</div> <!-- wrapper end -->  
+
+<script type="text/javascript" src="/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- JS Implementing Plugins -->
+<script type="text/javascript" src="/assets/plugins/back-to-top.js"></script>
+<script type="text/javascript" src="/assets/plugins/flexslider/jquery.flexslider-min.js"></script>
+<script type="text/javascript" src="/assets/plugins/parallax-slider/js/modernizr.js"></script>
+<script type="text/javascript" src="/assets/plugins/parallax-slider/js/jquery.cslider.js"></script>
+<!-- JS Page Level -->           
+<script type="text/javascript" src="/assets/js/app.js"></script>
+<script type="text/javascript" src="/assets/js/pages/index.js"></script>
+
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    App.init();
+    App.initSliders();
+    Index.initParallaxSlider();  
+  });
+
+  var nation_code = '<%= result.nation_code %>';
+
+  if(nation_code != 'undefined') {
+    $(".btn-u").click(search_country());
+  }
+
+</script>
+
+</body>
+</html>

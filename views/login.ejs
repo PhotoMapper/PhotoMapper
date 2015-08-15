@@ -1,0 +1,122 @@
+<!-- 2. login (페이스북 로그인) -->
+
+<!DOCTYPE html>
+<html xmlns:fb="http://ogp.me/ns/fb#">
+
+
+<html>
+<head>
+  <link rel='stylesheet' href='/stylesheets/login_style.css' />
+  <title><%= title %></title>
+</head>
+
+<body>
+  <div id="header">
+    <p>* Welcome to PhotoMapper *</p>
+  </div>
+  
+  <div id="content">
+
+    <!--facebookLogin-->
+    <div id="fb-root"></div>
+
+    <script>
+
+    window.fbAsyncInit = function() {
+      FB.init({
+              appId      : '1432025297055074', // 앱 ID
+              status     : true,          // 로그인 상태를 확인
+              cookie     : true,          // 쿠키허용
+              xfbml      : true           // parse XFBML
+          });
+
+      FB.getLoginStatus(function(response) {
+        if (response.status === 'connected') {
+
+          FB.api('/me', function(user) {
+            if (user) {
+              var image = document.getElementById('image');
+              image.src = 'http://graph.facebook.com/' + user.id + '/picture';
+              var name = document.getElementById('name');
+              name.innerHTML = user.name
+              var id = document.getElementById('id');
+              id.innerHTML = user.id
+            }
+          });    
+
+        } else if (response.status === 'not_authorized') {
+
+        } else {
+
+        }
+      });
+
+      FB.Event.subscribe('auth.login', function(response) {
+        document.location.reload();
+      });
+    };
+
+          // Load the SDK Asynchronously
+          (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/ko_KR/sdk.js#xfbml=1&appId=1432025297055074&version=v2.0";
+            fjs.parentNode.insertBefore(js, fjs);
+          }(document, 'script', 'facebook-jssdk'));
+
+          <!--추가적인 코드 작성란 -->
+
+          </script>
+
+          <!-- -->
+
+          <form action="javascript:alert('전송완료!')">
+
+            <fieldset>
+              <legend class="title">Facebook <%= title %></legend>
+              <ul>
+                <li>
+                  <label for="userId" class="id">아이디</label>
+                  <input type="text" id="userId" required>
+                </li>
+                <li>
+                  <label for="userPass" class="password">비밀번호</label>
+                  <input type="password" id="userPass" required>
+                </li>
+                <li>
+                  <span class="keep"><input type="checkbox" name="userType" id="keep" required> <label for="userType_local">로그인 상태 유지</label></span>
+                </li>
+              </ul>
+
+            </fieldset>
+
+          </form>
+
+          <!--facebook Login button -->
+          <fb:login-button max_rows="1" size="large" show_faces="false" auto_logout_link="true"></fb:login-button>
+          <br>
+          <br>
+          <br>
+          <br>
+
+          <div align="left">
+            <img id="image"/>
+            <div id="name"></div>
+            <div id="id"></div>
+          </div>
+
+          <!-- facebook Like button -->
+          <fb:like send="true" width="450" show_faces="true" font="verdana"></fb:like>
+
+      </div>
+
+
+      <div id="footer">
+        &copyright, PhotoMapper
+      </div>
+
+  </div>
+
+</body>
+</html>

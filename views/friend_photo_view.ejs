@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- CSS Global Compulsory -->
+    <link rel="stylesheet" href="/assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- CSS Implementing Plugins -->
+    <link rel="stylesheet" href="/assets/plugins/line-icons/line-icons.css">
+    <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/plugins/flexslider/flexslider.css">     
+    <link rel="stylesheet" href="/assets/plugins/parallax-slider/css/parallax-slider.css"> 
+
+    <!-- setting page CSS -->
+    <!-- <link rel="stylesheet" href="/stylesheets/setting_style.css"> -->
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- CSS Page Style -->    
+    <!-- <link rel="stylesheet" href="/assets/css/pages/portfolio-v1.css"> -->
+    
+    <!-- CSS Theme -->    
+    <link rel="stylesheet" href="/assets/css/themes/default.css" id="style_color">
+    
+    <!-- CSS Customization -->
+    <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="/stylesheets/friend_photo_view_style.css">
+</head>
+
+<body>
+    <div id="tooltip_country" class="hidden">
+        <p><span id="county-label"></span></p>
+    </div>
+    <div id="tooltip_state" class="hidden">
+        <p><span id="state-label"></span></p>
+    </div>
+    <script src="/javascripts/d3.v3.min.js"></script>
+    <script src="/javascripts/topojson.v1.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script> 
+    <script src="/javascripts/jquery.form.js"></script> 
+    <script src="/javascripts/jquery.validate.min.js"></script>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title><%= title %></title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="favicon.ico">
+
+        <!-- CSS Global Compulsory -->
+        <link rel="stylesheet" href="/assets/plugins/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/assets/css/style.css">
+
+        <!-- CSS Implementing Plugins -->
+        <link rel="stylesheet" href="/assets/plugins/line-icons/line-icons.css">
+        <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/assets/plugins/flexslider/flexslider.css">     
+        <link rel="stylesheet" href="/assets/plugins/parallax-slider/css/parallax-slider.css">
+
+        <!-- CSS Theme -->    
+        <link rel="stylesheet" href="/assets/css/themes/default.css" id="style_color">
+
+        <!-- setting page CSS -->
+        <link rel="stylesheet" href="/stylesheets/setting_style.css">
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="favicon.ico">
+
+        <!-- CSS Implementing Plugins -->
+        <link rel="stylesheet" href="/assets/plugins/fancybox/source/jquery.fancybox.css">  
+
+        <!-- CSS Page Style -->    
+        <link rel="stylesheet" href="/assets/css/pages/portfolio-v1.css">
+
+        <!-- CSS Theme -->    
+        <link rel="stylesheet" href="/assets/css/themes/default.css" id="style_color">
+
+        <!-- CSS Customization -->
+        <link rel="stylesheet" href="/assets/css/custom.css">
+        <link rel="stylesheet" href="/stylesheets/friend_photo_view_style.css">
+
+    </head>
+
+    <body>
+        <div id="tooltip_country" class="hidden">
+            <p><span id="county-label"></span></p>
+        </div>
+        <div id="tooltip_state" class="hidden">
+            <p><span id="state-label"></span></p>
+        </div>
+        <script src="/javascripts/d3.v3.min.js"></script>
+        <script src="/javascripts/topojson.v1.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script> 
+        <script src="http://malsup.github.com/jquery.form.js"></script> 
+        <script src="/javascripts/jquery.validate.min.js"></script>
+
+
+        <div class="wrapper">
+          <div class="header">
+              <!-- "c:"는 URL 재작성(rewriting) 참조 : http://ultteky.egloos.com/10500310 -->
+              <!-- Navbar -->
+              <div class="navbar navbar-default" role="navigation">
+
+                  <div class="navbar-header">
+                    <% if (user) { %>
+                    <a class="navbar-brand" href="/main">
+                      <img id="logo-header" src="/images/menubar/PageLogoWhite.png" alt="Logo">
+                  </a>
+                  <% } else { %>
+                  <a class="navbar-brand" href="/intro">
+                      <img id="logo-header" src="/images/menubar/PageLogoWhite.png" alt="Logo">
+                  </a>
+                  <% } %> 
+              </div>
+
+              <div class="menu">
+
+                <div class="facebook-login">
+                  <% if (user) { %>
+                  <a href="/logout">
+                    <button class="btn-facebook">
+                      <i class="fa fa-facebook"></i> Logout
+                  </button>
+              </a>
+              <div class="information">
+                <p class="welcome"> Welcome<br> <%= user.name %>'s photomapper</p>
+            </div>
+            <div class="picture">
+                <img src="http://graph.facebook.com/<%=user.id%>/picture">
+            </div>
+            <% } else { %>
+            <a href="/auth/facebook">
+                <button class="btn-facebook">
+                  <i class="fa fa-facebook"></i> Login
+              </button>
+          </a>
+          <% } %> 
+      </div>
+
+      <% if (user) { %>
+
+      <!-- Setting -->
+      <ul class="nav navbar-nav">
+          <li id="setting">
+            <a href="/setting">
+              <img src="/images/menubar/setting.png" alt="설정"> 
+          </a>
+      </li>
+  </ul>
+  <!-- End Setting -->
+
+  <!-- photo view -->
+  <ul class="nav navbar-nav">
+      <li id="photoView">
+        <a href="/all_photo_view" class="active">
+          <img src="/images/menubar/full_photo.png" alt="내 사진 보기">
+      </a>
+  </li>
+</ul>
+<!-- End Photo View -->
+
+
+<!-- Friend -->
+<ul class="nav navbar-nav">
+  <li id="friend">
+    <a href="/all_following_world_map">
+      <img src="/images/menubar/friend_map.png" alt="친구 지도 및 사진 보기">
+  </a>
+</li>
+</ul>
+<!-- End Friend -->
+
+<% } %> 
+
+</div>
+<!-- End menu -->
+
+
+<!-- End Navbar -->
+</div>        
+
+<!-- header end -->
+</div>
+
+
+<div class="container content">
+
+    <div class="headline"><h2 style="font-size:30px; color:#555; margin-top:10px;"><b><b><i class="fa fa-bar-chart-o"></i> 통계 </b></h2></div>
+    <!-- Begin Content -->
+    <br><br>
+    <div class="col-md-12" style="margin-bottom:50px; padding-left:40px; padding-right:40px;">
+        <!--Basic Form -->
+        <div class="panel panel-default" style="width:500px; height:250px; float:left; border-color:#f3746d;">
+            <div class="panel-heading" style="background-color:#f3746d">
+                <h3 class="panel-title">내가 다녀온 국가</h3>
+            </div>
+            <div class="panel-body">   
+            </div>
+        </div>
+        <!-- End Basic Form -->
+
+
+        <!-- Horizontal Form -->
+        <div class="panel panel-orange" style="width:500px; height:250px; float:right;">
+            <div class="panel-heading">
+                <h3 class="panel-title">내가 가고싶은 국가</h3>
+            </div>
+            <div class="panel-body">                                                      
+
+            </div>
+        </div>
+        <!-- End Horizontal Form -->
+    </div>
+
+    <!-- Accordion v1 -->         
+    <div class="ppanel-group acc-v1" id="accordion-1" style="padding-bottom:20px;">
+        <div class="ppanel ppanel-grey" style="margin-bottom:12px;">
+            <div class="ppanel-heading">
+                <h4 class="ppanel-title" data-toggle="collapse" data-parent="#accordion-1" href="#collapse-One">
+                    <a class="accordion-toggle">
+                        사람들이 사용한 카메라 브랜드
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse-One" class="ppanel-collapse collapse in">
+                <div class="ppanel-body">
+                    <div class="row" style="margin-top:30px; margin-bottom:20px;">
+                     <!--Basic Form -->
+                     <div class="col-md-12" style="padding-left:40px; padding-right:40px;">
+                        <div class="panel panel-default" style="width:500px; position:relative; float:left;">
+                            <div class="panel-heading" style="margin-bottom:-7px; background-color:#d3d3d3;">
+                                <h3 class="panel-title" style="color:black; margin:2px;">제조사</h3>
+                            </div>
+                            <div class="panel-body">  
+                                <!-- Small Progress Bar -->
+                                <div style="width:400px; float:left">
+                                    <h3 class="hheading-xs">Web Design <span class="pull-right">88%</span></h3>
+                                    <div class="progress progress-u progress-xs">
+                                        <div class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100" style="width: 88%">
+                                        </div>
+                                    </div>
+
+                                    <h3 class="hheading-xs">PHP/WordPress <span class="pull-right">76%</span></h3>
+                                    <div class="progress progress-u progress-xs">
+                                        <div class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="76" aria-valuemin="0" aria-valuemax="100" style="width: 76%">
+                                        </div>
+                                    </div>
+
+                                    <h3 class="hheading-xs">HTML/CSS <span class="pull-right">97%</span></h3>
+                                    <div class="progress progress-u progress-xs">
+                                        <div class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="97" aria-valuemin="0" aria-valuemax="100" style="width: 97%">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Small Progress Bar --> 
+                            </div>
+                        </div>
+                        <!-- End Basic Form -->
+
+
+                        <!-- Horizontal Form -->
+                        <div class="panel panel-default" style="width:500px; position:relative; float:right;">
+                            <div class="panel-heading" style="margin-bottom:-7px; background-color:#d3d3d3;">
+                                <h3 class="panel-title" style="color:black; margin:2px;">모델명</h3>
+                            </div>
+                            <div class="panel-body">                                                      
+                                <!-- Small Progress Bar -->
+                                <div style="width:400px;float:left">
+                                    <h3 class="hheading-xs">Web Design <span class="pull-right">88%</span></h3>
+                                    <div class="progress progress-u progress-xs">
+                                        <div class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100" style="width: 88%">
+                                        </div>
+                                    </div>
+
+                                    <h3 class="hheading-xs">PHP/WordPress <span class="pull-right">76%</span></h3>
+                                    <div class="progress progress-u progress-xs">
+                                        <div class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="76" aria-valuemin="0" aria-valuemax="100" style="width: 76%">
+                                        </div>
+                                    </div>
+
+                                    <h3 class="hheading-xs">HTML/CSS <span class="pull-right">97%</span></h3>
+                                    <div class="progress progress-u progress-xs">
+                                        <div class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="97" aria-valuemin="0" aria-valuemax="100" style="width: 97%">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Small Progress Bar --> 
+                            </div>
+                        </div>
+                        <!-- End Horizontal Form -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="ppanel ppanel-grey" style="margin-bottom:12px;">
+        <div class="ppanel-heading">
+            <h4 class="ppanel-title" data-toggle="collapse" data-parent="#accordion-1" href="#collapse-Two">
+                <a class="accordion-toggle">
+                    사람들이 많이 다녀온 곳
+                </a>
+            </h4>
+        </div>
+        <div id="collapse-Two" class="ppanel-collapse collapse">
+            <div class="ppanel-body">
+                <div class="row" style="margin-top:30px; margin-bottom:20px;">
+                 <!--Basic Form -->
+                 <div class="col-md-12" style="padding-left:40px; padding-right:40px;">
+                    <div class="panel panel-default" style="width:500px; position:relative; float:left;">
+                        <div class="panel-heading" style="margin-bottom:-7px; background-color:#d3d3d3;">
+                            <h3 class="panel-title" style="color:black; margin:2px;">국가</h3>
+                        </div>
+                        <div class="panel-body">  
+                            <!-- Small Progress Bar -->
+                            <div style="width:400px;float:left">
+                                <h3 class="hheading-xs">Web Design <span class="pull-right">88%</span></h3>
+                                <div class="progress progress-u progress-xs">
+                                    <div class="progress-bar progress-bar-orange" role="progressbar" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100" style="width: 88%">
+                                    </div>
+                                </div>
+
+                                <h3 class="hheading-xs">PHP/WordPress <span class="pull-right">76%</span></h3>
+                                <div class="progress progress-u progress-xs">
+                                    <div class="progress-bar progress-bar-orange" role="progressbar" aria-valuenow="76" aria-valuemin="0" aria-valuemax="100" style="width: 76%">
+                                    </div>
+                                </div>
+
+                                <h3 class="hheading-xs">HTML/CSS <span class="pull-right">97%</span></h3>
+                                <div class="progress progress-u progress-xs">
+                                    <div class="progress-bar progress-bar-orange" role="progressbar" aria-valuenow="97" aria-valuemin="0" aria-valuemax="100" style="width: 97%">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Small Progress Bar --> 
+                        </div>
+                    </div>
+                    <!-- End Basic Form -->
+
+
+                    <!-- Horizontal Form -->
+                    <div class="panel panel-default" style="width:500px; position:relative; float:right;">
+                        <div class="panel-heading" style="margin-bottom:-7px; background-color:#d3d3d3;">
+                            <h3 class="panel-title" style="color:black; margin:2px;">도시</h3>
+                        </div>
+                        <div class="panel-body">                                                      
+                            <!-- Small Progress Bar -->
+                            <div style="width:400px;float:left">
+                                <h3 class="hheading-xs">Web Design <span class="pull-right">88%</span></h3>
+                                <div class="progress progress-u progress-xs">
+                                    <div class="progress-bar progress-bar-orange" role="progressbar" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100" style="width: 88%">
+                                    </div>
+                                </div>
+
+                                <h3 class="hheading-xs">PHP/WordPress <span class="pull-right">76%</span></h3>
+                                <div class="progress progress-u progress-xs">
+                                    <div class="progress-bar progress-bar-orange" role="progressbar" aria-valuenow="76" aria-valuemin="0" aria-valuemax="100" style="width: 76%">
+                                    </div>
+                                </div>
+
+                                <h3 class="hheading-xs">HTML/CSS <span class="pull-right">97%</span></h3>
+                                <div class="progress progress-u progress-xs">
+                                    <div class="progress-bar progress-bar-orange" role="progressbar" aria-valuenow="97" aria-valuemin="0" aria-valuemax="100" style="width: 97%">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Small Progress Bar --> 
+                        </div>
+                    </div>
+                    <!-- End Horizontal Form -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ppanel ppanel-grey" style="margin-bottom:12px;">
+    <div class="ppanel-heading">
+        <h4 class="ppanel-title" data-toggle="collapse" data-parent="#accordion-1" href="#collapse-Three">
+            <a class="accordion-toggle">
+                사람들의 가싶요
+            </a>
+        </h4>
+    </div>
+    <div id="collapse-Three" class="ppanel-collapse collapse">
+        <div class="ppanel-body">
+            <div class="row" style="margin-top:30px; margin-bottom:20px;">
+             <!--Basic Form -->
+             <div class="col-md-12" style="padding-left:40px; padding-right:40px;">
+                <div class="panel panel-default" style="width:500px; position:relative; float:left;">
+                    <div class="panel-heading" style="margin-bottom:-7px; background-color:#d3d3d3;">
+                        <h3 class="panel-title" style="color:black; margin:2px;">국가</h3>
+                    </div>
+                    <div class="panel-body">  
+                        <!-- Small Progress Bar -->
+                        <div style="width:400px;float:left">
+                            <h3 class="hheading-xs">Web Design <span class="pull-right">88%</span></h3>
+                            <div class="progress progress-u progress-xs">
+                                <div class="progress-bar progress-bar-u" role="progressbar" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100" style="width: 88%">
+                                </div>
+                            </div>
+
+                            <h3 class="hheading-xs">PHP/WordPress <span class="pull-right">76%</span></h3>
+                            <div class="progress progress-u progress-xs">
+                                <div class="progress-bar progress-bar-u" role="progressbar" aria-valuenow="76" aria-valuemin="0" aria-valuemax="100" style="width: 76%">
+                                </div>
+                            </div>
+
+                            <h3 class="hheading-xs">HTML/CSS <span class="pull-right">97%</span></h3>
+                            <div class="progress progress-u progress-xs">
+                                <div class="progress-bar progress-bar-u" role="progressbar" aria-valuenow="97" aria-valuemin="0" aria-valuemax="100" style="width: 97%">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Small Progress Bar --> 
+                    </div>
+                </div>
+                <!-- End Basic Form -->
+
+
+                <!-- Horizontal Form -->
+                <div class="panel panel-default" style="width:500px; position:relative; float:right;">
+                    <div class="panel-heading" style="margin-bottom:-7px; background-color:#d3d3d3;">
+                        <h3 class="panel-title" style="color:black; margin:2px;">도시</h3>
+                    </div>
+                    <div class="panel-body">                                                      
+                        <!-- Small Progress Bar -->
+                        <div style="width:400px;float:left">
+                            <h3 class="hheading-xs">Web Design <span class="pull-right">88%</span></h3>
+                            <div class="progress progress-u progress-xs">
+                                <div class="progress-bar progress-bar-u" role="progressbar" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100" style="width: 88%">
+                                </div>
+                            </div>
+
+                            <h3 class="hheading-xs">PHP/WordPress <span class="pull-right">76%</span></h3>
+                            <div class="progress progress-u progress-xs">
+                                <div class="progress-bar progress-bar-u" role="progressbar" aria-valuenow="76" aria-valuemin="0" aria-valuemax="100" style="width: 76%">
+                                </div>
+                            </div>
+
+                            <h3 class="hheading-xs">HTML/CSS <span class="pull-right">97%</span></h3>
+                            <div class="progress progress-u progress-xs">
+                                <div class="progress-bar progress-bar-u" role="progressbar" aria-valuenow="97" aria-valuemin="0" aria-valuemax="100" style="width: 97%">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Small Progress Bar --> 
+                    </div>
+                </div>
+                <!-- End Horizontal Form -->
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+</div>
+<!-- End Accordion v1 -->                
+
+</div>
+</div>
+
+
+<!--=== Footer ===-->
+<div class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 md-margin-bottom-40">
+        <!-- About -->
+        <div class="headline"><h2><b>Photommaper 사용자 약관</b></h2></div>  
+        <p class="margin-bottom-25 md-margin-bottom-40">PhotoMapper is ~</p>    
+        <!-- End About -->
+    </div><!--/col-md-4-->  
+
+    <div class="col-md-4">
+        <!-- Contact Us -->
+        <div class="headline"><h2><b>주소 및 연락처</b></h2></div> 
+        <address class="md-margin-bottom-40">
+          잠실 향군타워 5층, sGen Club <br />
+          서울특별시 송파구 신천동 7-29 <br />
+          Phone: xxx xxx xxxx <br />
+          Fax: xxx xxx xxxx <br />
+      </address>
+      <!-- End Contact Us -->
+  </div><!--/col-md-4-->
+
+  <div class="col-md-4">
+     <!-- Social Links -->  
+     <div class="headline"><h2>링크</h2></div> 
+     <ul class="social-icons">
+        <li><a href="#" data-original-title="Feed" class="social_rss"></a></li>
+        <li><a href="#" data-original-title="Facebook" class="social_facebook"></a></li>
+        <li><a href="#" data-original-title="Twitter" class="social_twitter"></a></li>
+        <li><a href="#" data-original-title="Goole Plus" class="social_googleplus"></a></li>
+        <li><a href="#" data-original-title="Pinterest" class="social_pintrest"></a></li>
+        <li><a href="#" data-original-title="Linkedin" class="social_linkedin"></a></li>
+        <li><a href="#" data-original-title="Vimeo" class="social_vimeo"></a></li>
+    </ul>
+    <!-- End Social Links -->
+</div>
+</div>
+</div> 
+</div><!--/footer-->
+<!--=== End Footer ===-->
+<div class="copyright">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">  
+        <a href="/main">
+          <img class="pull-right" id="logo-footer" src="/images/menubar/PageLogoWhite.png" alt="Logo">
+      </a>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">                     
+    <p>
+      2014 &copy; PhotoMapper. ALL Rights Reserved.
+  </p>
+</div>
+</div>
+</div> 
+</div><!--/copyright--> 
+</div> <!-- wrapper end -->
+
+<!-- JS Global Compulsory -->           
+<script type="text/javascript" src="/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- JS Implementing Plugins -->
+<script type="text/javascript" src="/assets/plugins/back-to-top.js"></script>
+<script type="text/javascript" src="/assets/plugins/flexslider/jquery.flexslider-min.js"></script>
+<script type="text/javascript" src="/assets/plugins/parallax-slider/js/modernizr.js"></script>
+<script type="text/javascript" src="/assets/plugins/parallax-slider/js/jquery.cslider.js"></script>
+<!-- JS Page Level -->           
+<script type="text/javascript" src="/assets/js/app.js"></script>
+<script type="text/javascript" src="/assets/js/pages/index.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function() {
+    App.init();
+    App.initSliders();
+    Index.initParallaxSlider();  
+});
+</script> 
+
+</body>
+
+</html>

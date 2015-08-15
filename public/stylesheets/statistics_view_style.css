@@ -1,0 +1,370 @@
+font-face {
+  font-family: 'Nanum Barun Gothic';
+  font-style: normal;
+  src: local('Nanum Barun Gothic Regular'), local('Nanum Barun Gothic-Regular'), local('NanumBarunGothic Regular');
+  src: url(/images/NanumBarunGothic.eot);
+  src: url(/images/NanumBarunGothic.eot?#iefix) format('embedded-opentype'),
+  url(/images/NanumBarunGothic.woff) format('woff'),
+  url(/images/NanumBarunGothic.ttf) format('truetype');
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+h3.hheading-xs {
+  font-size: 16px;
+  margin-bottom: 0;
+}
+
+.accordion-toggle {
+  text-align: left;
+}
+
+#headline_tmp h2{
+  border-bottom: 2px solid #555;
+}
+
+/*Accordions
+------------------------------------*/
+/*Accordion v1*/
+.aacc-v1 .ppanel-heading {
+  padding: 0;
+  box-shadow: none;
+}
+
+.aacc-v1 .ppanel-heading a {
+  display: block;
+  font-size: 14px;
+  padding: 5px 15px;
+  background: #fefefe;
+  cursor: 
+}
+/*
+.acc-icon a.accordion-toggle i {
+  color: #585f69;
+  margin-right: 8px;
+}
+.acc-icon a.accordion-toggle:hover i {
+  color: #39414c;
+  }*/
+
+/*ppanels (Portlets)
+------------------------------------*/
+.ppanel-heading {
+  color: #fff;  
+  padding: 5px 15px;
+}
+
+
+/*ppanel Table*/
+.ppanel .table {
+  margin-bottom: 0;
+}
+
+/*ppanel Unify*/
+.ppanel-u {
+ border-color: #72c02c;
+}
+
+.ppanel-u > .ppanel-heading {
+ background: #72c02c;
+}
+
+/*ppanel Blue*/
+.ppanel-blue {
+ border-color: #3498db;
+}
+
+.ppanel-blue > .ppanel-heading {
+ background: #3498db;
+}
+
+/*ppanel Red*/
+.ppanel-red {
+ border-color: #e74c3c;
+}
+
+.ppanel-red > .ppanel-heading {
+ background: #e74c3c;
+}
+
+/*ppanel Green*/
+.ppanel-green {
+ border-color: #2ecc71;
+}
+
+.ppanel-green > .ppanel-heading {
+ background: #2ecc71;
+}
+
+/*ppanel Sea*/
+.ppanel-sea {
+ border-color: #1abc9c;
+}
+
+.ppanel-sea > .ppanel-heading {
+ background: #1abc9c;
+}
+
+/*ppanel Orange*/
+.ppanel-orange {
+ border-color: #e67e22;
+}
+
+.ppanel-orange > .ppanel-heading {
+ background: #e67e22;
+}
+
+/*ppanel Yellow*/
+.ppanel-yellow {
+  border-color: #f1c40f;
+}
+
+.ppanel-yellow > .ppanel-heading {
+ background: #f1c40f;
+}
+
+/*ppanel Grey*/
+.ppanel-grey {
+ border-color: #95a5a6;
+}
+
+.ppanel-grey > .ppanel-heading {
+ background: #95a5a6;
+}
+
+/*ppanel Dark*/
+.ppanel-dark {
+ border-color: #555;
+}
+
+.ppanel-dark > .ppanel-heading {
+ background: #555;
+}
+
+/*ppanel Purple*/
+.ppanel-purple {
+ border-color: #9b6bcc;
+}
+
+.ppanel-purple > .ppanel-heading {
+ background: #9b6bcc;
+}
+
+/*ppanel Aqua*/
+.ppanel-aqua {
+ border-color: #27d7e7;
+}
+
+.ppanel-aqua > .ppanel-heading {
+ background: #27d7e7;
+}
+
+/*ppanel Brown*/
+.ppanel-brown {
+ border-color: #9c8061;
+}
+
+.ppanel-brown > .ppanel-heading {
+ background: #9c8061;
+}
+
+/*ppanel Dark Blue*/
+.ppanel-dark-blue {
+ border-color: #4765a0;
+}
+
+.ppanel-dark-blue > .ppanel-heading {
+ background: #4765a0;
+}
+
+/*ppanel Light Green*/
+.ppanel-light-green {
+ border-color: #79d5b3;
+}
+
+.ppanel-light-green > .ppanel-heading {
+ background: #79d5b3;
+}
+
+/*ppanel Default Dark*/
+.ppanel-default-dark {
+ border-color: #585f69;
+}
+
+.ppanel-default-dark > .ppanel-heading {
+ background: #585f69;
+}
+
+
+
+.ppanel { margin-bottom: 20px;background-color:#fff;border:1px solid transparent;border-radius:4px;-webkit-box-shadow:0 1px 1px rgba(0,0,0,.05);box-shadow:0 1px 1px rgba(0,0,0,.05) }
+.ppanel-body { padding-top:-30px; padding-left: 15px; max-height: 200px; overflow: auto;}
+
+.ppanel-body:hover {
+    overflow-y: auto;
+}
+ 
+
+.ppanel-body::-webkit-scrollbar {
+   /*padding-right: 10px;*/
+    width: 10px;
+}
+ 
+/* Track */
+.ppanel-body::-webkit-scrollbar-track {
+   /*padding-right: 10px;*/
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.5); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+ 
+/* Handle */
+.ppanel-body::-webkit-scrollbar-thumb {
+   /*padding-right: 10px;*/
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    /*background: #464e5b;*/
+    background: #555;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.5); 
+}
+.ppanel-body::-webkit-scrollbar-thumb:window-inactive {
+   /*padding-right: 10px;*/
+    /*background: rgba(141,182,205,0.8); */
+    background: #555;
+}
+
+
+.ppanel>.list-group { margin-bottom: 0 }
+.ppanel>.list-group .list-group-item { border-width: 1px 0;border-radius:0 }
+.ppanel>.list-group .list-group-item:first-child { border-top: 0 }
+.ppanel>.list-group .list-group-item:last-child { border-bottom: 0 }
+.ppanel>.list-group:first-child .list-group-item:first-child { border-top-right-radius: 3px;border-top-left-radius:3px }
+.ppanel>.list-group:last-child .list-group-item:last-child { border-bottom-right-radius: 3px;border-bottom-left-radius:3px }
+.ppanel-heading+.list-group .list-group-item:first-child { border-top-width: 0 }
+.ppanel>.table,
+.ppanel>.table-responsive>.table { margin-bottom: 0 }
+.ppanel>.table:first-child>thead:first-child>tr:first-child td:first-child,
+.ppanel>.table-responsive:first-child>.table:first-child>thead:first-child>tr:first-child td:first-child,
+.ppanel>.table:first-child>tbody:first-child>tr:first-child td:first-child,
+.ppanel>.table-responsive:first-child>.table:first-child>tbody:first-child>tr:first-child td:first-child,
+.ppanel>.table:first-child>thead:first-child>tr:first-child th:first-child,
+.ppanel>.table-responsive:first-child>.table:first-child>thead:first-child>tr:first-child th:first-child,
+.ppanel>.table:first-child>tbody:first-child>tr:first-child th:first-child,
+.ppanel>.table-responsive:first-child>.table:first-child>tbody:first-child>tr:first-child th:first-child { border-top-left-radius: 3px }
+.ppanel>.table:first-child>thead:first-child>tr:first-child td:last-child,
+.ppanel>.table-responsive:first-child>.table:first-child>thead:first-child>tr:first-child td:last-child,
+.ppanel>.table:first-child>tbody:first-child>tr:first-child td:last-child,
+.ppanel>.table-responsive:first-child>.table:first-child>tbody:first-child>tr:first-child td:last-child,
+.ppanel>.table:first-child>thead:first-child>tr:first-child th:last-child,
+.ppanel>.table-responsive:first-child>.table:first-child>thead:first-child>tr:first-child th:last-child,
+.ppanel>.table:first-child>tbody:first-child>tr:first-child th:last-child,
+.ppanel>.table-responsive:first-child>.table:first-child>tbody:first-child>tr:first-child th:last-child { border-top-right-radius: 3px }
+.ppanel>.table:last-child>tbody:last-child>tr:last-child td:first-child,
+.ppanel>.table-responsive:last-child>.table:last-child>tbody:last-child>tr:last-child td:first-child,
+.ppanel>.table:last-child>tfoot:last-child>tr:last-child td:first-child,
+.ppanel>.table-responsive:last-child>.table:last-child>tfoot:last-child>tr:last-child td:first-child,
+.ppanel>.table:last-child>tbody:last-child>tr:last-child th:first-child,
+.ppanel>.table-responsive:last-child>.table:last-child>tbody:last-child>tr:last-child th:first-child,
+.ppanel>.table:last-child>tfoot:last-child>tr:last-child th:first-child,
+.ppanel>.table-responsive:last-child>.table:last-child>tfoot:last-child>tr:last-child th:first-child { border-bottom-left-radius: 3px }
+.ppanel>.table:last-child>tbody:last-child>tr:last-child td:last-child,
+.ppanel>.table-responsive:last-child>.table:last-child>tbody:last-child>tr:last-child td:last-child,
+.ppanel>.table:last-child>tfoot:last-child>tr:last-child td:last-child,
+.ppanel>.table-responsive:last-child>.table:last-child>tfoot:last-child>tr:last-child td:last-child,
+.ppanel>.table:last-child>tbody:last-child>tr:last-child th:last-child,
+.ppanel>.table-responsive:last-child>.table:last-child>tbody:last-child>tr:last-child th:last-child,
+.ppanel>.table:last-child>tfoot:last-child>tr:last-child th:last-child,
+.ppanel>.table-responsive:last-child>.table:last-child>tfoot:last-child>tr:last-child th:last-child { border-bottom-right-radius: 3px }
+.ppanel>.ppanel-body+.table,
+.ppanel>.ppanel-body+.table-responsive { border-top: 1px solid #ddd }
+.ppanel>.table>tbody:first-child>tr:first-child th,
+.ppanel>.table>tbody:first-child>tr:first-child td { border-top: 0 }
+.ppanel>.table-bordered,
+.ppanel>.table-responsive>.table-bordered { border: 0 }
+.ppanel>.table-bordered>thead>tr>th:first-child,
+.ppanel>.table-responsive>.table-bordered>thead>tr>th:first-child,
+.ppanel>.table-bordered>tbody>tr>th:first-child,
+.ppanel>.table-responsive>.table-bordered>tbody>tr>th:first-child,
+.ppanel>.table-bordered>tfoot>tr>th:first-child,
+.ppanel>.table-responsive>.table-bordered>tfoot>tr>th:first-child,
+.ppanel>.table-bordered>thead>tr>td:first-child,
+.ppanel>.table-responsive>.table-bordered>thead>tr>td:first-child,
+.ppanel>.table-bordered>tbody>tr>td:first-child,
+.ppanel>.table-responsive>.table-bordered>tbody>tr>td:first-child,
+.ppanel>.table-bordered>tfoot>tr>td:first-child,
+.ppanel>.table-responsive>.table-bordered>tfoot>tr>td:first-child { border-left: 0 }
+.ppanel>.table-bordered>thead>tr>th:last-child,
+.ppanel>.table-responsive>.table-bordered>thead>tr>th:last-child,
+.ppanel>.table-bordered>tbody>tr>th:last-child,
+.ppanel>.table-responsive>.table-bordered>tbody>tr>th:last-child,
+.ppanel>.table-bordered>tfoot>tr>th:last-child,
+.ppanel>.table-responsive>.table-bordered>tfoot>tr>th:last-child,
+.ppanel>.table-bordered>thead>tr>td:last-child,
+.ppanel>.table-responsive>.table-bordered>thead>tr>td:last-child,
+.ppanel>.table-bordered>tbody>tr>td:last-child,
+.ppanel>.table-responsive>.table-bordered>tbody>tr>td:last-child,
+.ppanel>.table-bordered>tfoot>tr>td:last-child,
+.ppanel>.table-responsive>.table-bordered>tfoot>tr>td:last-child { border-right: 0 }
+.ppanel>.table-bordered>thead>tr:first-child>th,
+.ppanel>.table-responsive>.table-bordered>thead>tr:first-child>th,
+.ppanel>.table-bordered>tbody>tr:first-child>th,
+.ppanel>.table-responsive>.table-bordered>tbody>tr:first-child>th,
+.ppanel>.table-bordered>tfoot>tr:first-child>th,
+.ppanel>.table-responsive>.table-bordered>tfoot>tr:first-child>th,
+.ppanel>.table-bordered>thead>tr:first-child>td,
+.ppanel>.table-responsive>.table-bordered>thead>tr:first-child>td,
+.ppanel>.table-bordered>tbody>tr:first-child>td,
+.ppanel>.table-responsive>.table-bordered>tbody>tr:first-child>td,
+.ppanel>.table-bordered>tfoot>tr:first-child>td,
+.ppanel>.table-responsive>.table-bordered>tfoot>tr:first-child>td { border-top: 0 }
+.ppanel>.table-bordered>thead>tr:last-child>th,
+.ppanel>.table-responsive>.table-bordered>thead>tr:last-child>th,
+.ppanel>.table-bordered>tbody>tr:last-child>th,
+.ppanel>.table-responsive>.table-bordered>tbody>tr:last-child>th,
+.ppanel>.table-bordered>tfoot>tr:last-child>th,
+.ppanel>.table-responsive>.table-bordered>tfoot>tr:last-child>th,
+.ppanel>.table-bordered>thead>tr:last-child>td,
+.ppanel>.table-responsive>.table-bordered>thead>tr:last-child>td,
+.ppanel>.table-bordered>tbody>tr:last-child>td,
+.ppanel>.table-responsive>.table-bordered>tbody>tr:last-child>td,
+.ppanel>.table-bordered>tfoot>tr:last-child>td,
+.ppanel>.table-responsive>.table-bordered>tfoot>tr:last-child>td { border-bottom: 0 }
+.ppanel>.table-responsive { border: 0;margin-bottom:0 }
+.ppanel-heading { padding: 10px 15px;border-bottom:1px solid transparent;border-top-right-radius:3px;border-top-left-radius:3px; }
+.ppanel-heading>.dropdown .dropdown-toggle { color: inherit; }
+.ppanel-title { margin-top: 0;margin-bottom:0;font-size:16px;color:inherit; cursor:pointer; color:white; font-size:17px;}
+.ppanel-title>a { color: white;}
+.ppanel-footer { padding: 10px 15px;background-color:#f5f5f5;border-top:1px solid #ddd;border-bottom-right-radius:3px;border-bottom-left-radius:3px }
+.ppanel-group { margin-bottom: 20px }
+.ppanel-group .ppanel { margin-bottom: 0;border-radius:4px;overflow:hidden }
+/*.ppanel-group .ppanel+.ppanel { margin-top: 5px }*/
+.ppanel-group .ppanel-heading { border-bottom: 0 }
+/*.ppanel-group .ppanel-heading+.ppanel-collapse .ppanel-body { border-top: 1px solid #ddd }*/
+.ppanel-group .ppanel-footer { border-top: 0 }
+.ppanel-group .ppanel-footer+.ppanel-collapse .ppanel-body { border-bottom: 1px solid #ddd }
+.ppanel-default { border-color: #ddd }
+.ppanel-default>.ppanel-heading { color: #333;background-color:#f5f5f5;border-color:#ddd }
+.ppanel-default>.ppanel-heading+.ppanel-collapse .ppanel-body { border-top-color: #ddd }
+.ppanel-default>.ppanel-footer+.ppanel-collapse .ppanel-body { border-bottom-color: #ddd }
+.ppanel-primary { border-color: #428bca }
+.ppanel-primary>.ppanel-heading { color: #fff;background-color:#428bca;border-color:#428bca }
+.ppanel-primary>.ppanel-heading+.ppanel-collapse .ppanel-body { border-top-color: #428bca }
+.ppanel-primary>.ppanel-footer+.ppanel-collapse .ppanel-body { border-bottom-color: #428bca }
+.ppanel-success { border-color: #d6e9c6 }
+.ppanel-success>.ppanel-heading { color: #3c763d;background-color:#dff0d8;border-color:#d6e9c6 }
+.ppanel-success>.ppanel-heading+.ppanel-collapse .ppanel-body { border-top-color: #d6e9c6 }
+.ppanel-success>.ppanel-footer+.ppanel-collapse .ppanel-body { border-bottom-color: #d6e9c6 }
+.ppanel-info { border-color: #bce8f1 }
+.ppanel-info>.ppanel-heading { color: #31708f;background-color:#d9edf7;border-color:#bce8f1 }
+.ppanel-info>.ppanel-heading+.ppanel-collapse .ppanel-body { border-top-color: #bce8f1 }
+.ppanel-info>.ppanel-footer+.ppanel-collapse .ppanel-body { border-bottom-color: #bce8f1 }
+.ppanel-warning { border-color: #faebcc }
+.ppanel-warning>.ppanel-heading { color: #8a6d3b;background-color:#fcf8e3;border-color:#faebcc }
+.ppanel-warning>.ppanel-heading+.ppanel-collapse .ppanel-body { border-top-color: #faebcc }
+.ppanel-warning>.ppanel-footer+.ppanel-collapse .ppanel-body { border-bottom-color: #faebcc }
+.ppanel-danger { border-color: #ebccd1 }
+.ppanel-danger>.ppanel-heading { color: #a94442;background-color:#f2dede;border-color:#ebccd1 }
+.ppanel-danger>.ppanel-heading+.ppanel-collapse .ppanel-body { border-top-color: #ebccd1 }
+.ppanel-danger>.ppanel-footer+.ppanel-collapse .ppanel-body { border-bottom-color: #ebccd1 }

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%=title%></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <!-- CSS Global Compulsory -->
+    <link rel="stylesheet" href="/assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- CSS Implementing Plugins -->
+    <link rel="stylesheet" href="/assets/plugins/line-icons/line-icons.css">
+    <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/plugins/flexslider/flexslider.css">     
+    <link rel="stylesheet" href="/assets/plugins/parallax-slider/css/parallax-slider.css">
+
+    <!-- CSS Theme -->    
+    <link rel="stylesheet" href="/assets/css/themes/default.css" id="style_color">
+
+    <!-- CSS Customization -->
+    <link rel="stylesheet" href="/assets/css/custom.css">
+</head>
+  <script src="/javascripts/d3.v3.min.js"></script>
+  <script src="/javascripts/topojson.v1.min.js"></script>
+
+  <div class="wrapper">
+    <div class="header">
+      <!-- "c:"는 URL 재작성(rewriting) 참조 : http://ultteky.egloos.com/10500310 -->
+
+      <!-- Navbar -->
+      <div class="navbar navbar-default" role="navigation">
+
+          <div class="navbar-header">
+            <% if (user) { %>
+            <a class="navbar-brand" href="/main">
+              <img id="logo-header" src="/images/menubar/PageLogoWhite.png" alt="Logo">
+            </a>
+            <% } else { %>
+            <a class="navbar-brand" href="/intro">
+              <img id="logo-header" src="/images/menubar/PageLogoWhite.png" alt="Logo">
+            </a>
+            <% } %> 
+          </div>
+
+          <div class="menu">
+
+            <div class="facebook-login">
+              <% if (user) { %>
+              <a href="/logout">
+                <button class="btn-facebook">
+                  <i class="fa fa-facebook"></i> Logout
+                </button>
+              </a>
+              <div class="information">
+                <p class="welcome"> Welcome<br> <%= user.name %>'s photomapper</p>
+              </div>
+              <div class="picture">
+                <img src="http://graph.facebook.com/<%=user.id%>/picture">
+              </div>
+              <% } else { %>
+              <a href="/auth/facebook">
+                <button class="btn-facebook">
+                  <i class="fa fa-facebook"></i> Login
+                </button>
+              </a>
+              <% } %> 
+            </div>
+
+          </div>
+          <!-- End menu -->
+
+
+        <!-- End Navbar -->
+      </div>        
+
+      <!-- header end -->
+    </div>
+
+      <div class="canvas">
+        <script>
+
+            var margin = {top: -5, right: -5, bottom: -5, left: -5},
+                width = screen.width - margin.left - margin.right,
+                height = screen.height - margin.top - margin.bottom;
+
+            var speed = -0.02,
+                    start = Date.now();
+
+            var sphere = {type: "Sphere"};
+
+            var projection = d3.geo.orthographic()
+                .scale(width/10)
+                .translate([width/2, height*2/5])
+                .clipAngle(90)
+                .precision(.5);
+
+            var canvas = d3.select(".canvas")
+                .append("canvas")
+                .attr("class", "canvas")
+                .attr("width", width)
+                .attr("height", height);
+
+            var context = canvas.node().getContext("2d");
+
+            var path = d3.geo.path()
+                .projection(projection)
+                .context(context);
+
+            d3.json("/json/intro_world.json", function(error, world) {  // 돌아가는 지구본
+              var contries = topojson.feature(world, world.objects.land),
+                  borders = topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; });
+
+              d3.timer(function() {
+                projection.rotate([speed * (Date.now() + start), 0, -23.5]);
+
+                context.beginPath();
+                path(sphere);
+                context.lineWidth = 1;
+                context.strokeStyle = "#61c3c3";    // 지구 외곽 (테두리)
+                context.fillStyle = "#61c3c3";  // 바다 색
+                context.stroke();
+                context.fill();
+
+                context.beginPath();
+                path(contries);
+                context.fillStyle = "#fff";  // 땅 색깔
+                context.fill();
+
+                context.beginPath();
+                path(borders);
+                context.lineWidth = .5;
+                context.strokeStyle = "#61c3c3"; // 나라 경계선 색깔
+                context.stroke();
+              });
+            });
+
+            var projection2 = d3.geo.mercator()
+                .scale(screen.width/9.5)
+                .translate([screen.width*4.5/9, (screen.height*2.8)/5]);
+
+            var path2 = d3.geo.path()
+                .projection(projection2)
+                .context(context);
+
+            d3.json("/json/world.json", function(error, world) {    // 뒤에 펼쳐진 지구본
+                var contries = topojson.feature(world, world.objects.countries);
+
+                context.beginPath();
+                path2(contries);
+                context.fillStyle = "#e6e6e6";  // 대륙 색깔
+                context.fill();
+                context.lineWidth = .5;
+                context.strokeStyle = "#fff"; // 나라선 색깔
+                context.stroke();
+            });
+        </script>
+    </div>
+    
+    <!--=== Footer ===-->
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 md-margin-bottom-40">
+                    <!-- About -->
+                    <div class="headline"><h2><b>About PhotoMapper</b></h2></div>  
+                    <p class="margin-bottom-25 md-margin-bottom-40">PhotoMapper is ~</p>    
+                    <!-- End About -->
+                </div><!--/col-md-4-->  
+
+                <div class="col-md-4">
+                    <!-- Contact Us -->
+                    <div class="headline"><h2><b>Contact Us</b></h2></div> 
+                    <address class="md-margin-bottom-40">
+                        잠실 향군타워 5층, sGen Club <br />
+                        서울특별시 송파구 신천동 7-29 <br />
+                        Phone: xxx xxx xxxx <br />
+                        Fax: xxx xxx xxxx <br />
+                    </address>
+                    <!-- End Contact Us -->
+                </div><!--/col-md-4-->
+
+                <div class="col-md-4">
+                 <!-- Social Links -->
+                    <div class="headline"><h2>Social Networks</h2></div> 
+                    <ul class="social-icons">
+                        <li><a href="#" data-original-title="Feed" class="social_rss"></a></li>
+                        <li><a href="#" data-original-title="Facebook" class="social_facebook"></a></li>
+                        <li><a href="#" data-original-title="Twitter" class="social_twitter"></a></li>
+                        <li><a href="#" data-original-title="Goole Plus" class="social_googleplus"></a></li>
+                        <li><a href="#" data-original-title="Pinterest" class="social_pintrest"></a></li>
+                        <li><a href="#" data-original-title="Linkedin" class="social_linkedin"></a></li>
+                        <li><a href="#" data-original-title="Vimeo" class="social_vimeo"></a></li>
+                    </ul>
+                    <!-- End Social Links -->
+                </div>
+            </div>
+        </div> 
+    </div><!--/footer-->
+    <!--=== End Footer ===-->
+        <div class="copyright">
+          <div class="container">
+              <div class="row">
+                  <div class="col-md-6">  
+                      <a href="/main">
+                          <img class="pull-right" id="logo-footer" src="/images/menubar/PageLogoWhite.png" alt="Logo">
+                      </a>
+                  </div>
+                  <div class="col-md-6">                     
+                      <p>
+                          2014 &copy; PhotoMapper. ALL Rights Reserved.
+                      </p>
+                  </div>
+              </div>
+          </div> 
+        </div><!--/copyright--> 
+    <div> <!-- wrapper end -->
+
+    <script type="text/javascript" src="/assets/plugins/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- JS Implementing Plugins -->
+    <script type="text/javascript" src="/assets/plugins/back-to-top.js"></script>
+    <script type="text/javascript" src="/assets/plugins/flexslider/jquery.flexslider-min.js"></script>
+    <script type="text/javascript" src="/assets/plugins/parallax-slider/js/modernizr.js"></script>
+    <script type="text/javascript" src="/assets/plugins/parallax-slider/js/jquery.cslider.js"></script>
+    <!-- JS Page Level -->           
+    <script type="text/javascript" src="/assets/js/app.js"></script>
+    <script type="text/javascript" src="/assets/js/pages/index.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            App.init();
+            App.initSliders();
+            Index.initParallaxSlider();        
+        });
+    </script>
+    </body>
+</html>

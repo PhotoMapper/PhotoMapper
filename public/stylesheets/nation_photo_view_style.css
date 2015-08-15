@@ -1,0 +1,225 @@
+@font-face {
+  font-family: 'Nanum Barun Gothic';
+  font-style: normal;
+  src: local('Nanum Barun Gothic Regular'), local('Nanum Barun Gothic-Regular'), local('NanumBarunGothic Regular');
+  src: url(/images/NanumBarunGothic.eot);
+  src: url(/images/NanumBarunGothic.eot?#iefix) format('embedded-opentype'),
+       url(/images/NanumBarunGothic.woff) format('woff'),
+       url(/images/NanumBarunGothic.ttf) format('truetype');
+}
+
+
+h1 {
+	margin-top: 20px;
+	margin-left: 205px;
+	font-size: 28px;
+	color:black;
+   font-weight: normal;
+}
+
+h2 {
+	margin-bottom: 30px;
+	color:black;
+	font-size: 23px;
+   font-weight: normal;
+}
+
+.mask>p {
+   margin-top: 5px;
+}
+
+#onephoto a {
+   margin: -5px;
+}
+/*Style Switcher
+------------------------------------*/
+i.style-switcher-btn {
+   top: 80px;
+   color: #fff;
+   font-size: 20px;
+   cursor: pointer;
+   z-index: 555555;
+   position: fixed;
+   padding: 8px 10px;
+   background: #1f3036;
+   border-radius: 0 6px 6px 0 !important;   
+
+}
+
+i.style-switcher-btn:hover {
+   background:#707985;
+}
+
+i.style-switcher-btn-option {
+   top: 38px;
+   background: #9097a0;
+}
+
+i.style-switcher-btn-option:hover {
+   background: #707985;
+}
+
+.style-switcher {
+
+   left: 0;
+   top: 80px;
+   width: 200px;
+
+   max-height: 400px;
+   overflow: auto;
+   font-family: 'Nanum Barun Gothic';
+
+   display: none;
+   z-index: 555555;
+   position: fixed;
+   /*background: #585f69;*/
+   background: #fff;
+   border: solid 1px #666d76;
+   /*padding: 15px 15px 15px 20px;*/
+   border-radius: 0 6px 6px 0 !important;
+
+}
+
+.style-switcher:hover {
+    overflow-y: auto;
+}
+ 
+
+.style-switcher::-webkit-scrollbar {
+   /*padding-right: 10px;*/
+    width: 10px;
+}
+ 
+/* Track */
+.style-switcher::-webkit-scrollbar-track {
+   /*padding-right: 10px;*/
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.5); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+ 
+/* Handle */
+.style-switcher::-webkit-scrollbar-thumb {
+   /*padding-right: 10px;*/
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    /*background: #464e5b;*/
+    background: #555;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.5); 
+}
+.style-switcher::-webkit-scrollbar-thumb:window-inactive {
+   /*padding-right: 10px;*/
+    /*background: rgba(141,182,205,0.8); */
+    background: #555;
+}
+
+.style-switcher-inner {
+   background: #9097a0;
+}
+
+.style-switcher .theme-close {
+   top: 1px;
+   right: 1px;
+
+
+   position: absolute;
+   cursor: pointer;
+   margin: 6px;
+   padding-left: 4px;
+   padding-right: 4px;
+   padding-top: 1px;
+   padding-bottom: 3px;
+
+   border-bottom-left-radius: 4px;
+   border-top-left-radius: 4px;
+   border-bottom-right-radius: 4px;
+   border-top-right-radius: 4px;
+}
+
+   .style-switcher .theme-close:hover {
+      background-color: #f3746d;
+   }
+
+
+
+.style-switcher .theme-heading {
+   color: #fff;
+   font-size: 16px;
+   margin-bottom: 10px;
+   text-transform: uppercase;
+}
+
+.style-switcher-logo  {
+   margin-top: 10px;
+   padding-top: 15px;
+   border-top: solid 1px #4c5159;
+}
+
+#SeeWoldPhoto #nation_list_button{
+   width:100%;
+   height: 50px;
+   margin-right: 10px;
+   float: left;
+   text-align: center;
+   vertical-align: middle;
+   border: none;
+   background-color: transparent;
+}
+
+   #SeeWoldPhoto #nation_list_button:hover {
+      background-color: #BEBEBE;
+   }
+
+#SeeWoldPhoto p{
+   float: left;
+   font-family: 'Nanum Barun Gothic';
+   font-size: 15px;
+   text-align: center;
+   vertical-align: middle;
+   margin-left: 10px;
+   color: #555;
+   /*font-weight: bold;*/
+}
+
+
+.style-switcher h3 {
+   color: #555;
+   font-size: 20px;
+   font-weight: bold;
+   margin-left: 10px;
+}
+
+#SeeWoldPhoto img{
+   float: left;
+   text-align: center;
+   vertical-align: middle;
+   margin-left: 5px;
+   margin-top: 15px;
+}
+
+
+
+.view img{
+
+  max-width: 400px;
+  min-height: 308px;
+
+}
+
+
+/*.view-tenth h2 {
+  color: #333;
+  float: left;
+  position: absolute;
+  margin: 0;
+  background: transparent;
+  border-bottom: 0px;
+  -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  opacity: 0;
+}*/
+
+/*.view-tenth h2 {
+  position:relative; float:left;
+  margin-bottom: -50px;
+}*/

@@ -1,0 +1,203 @@
+<!-- <!DOCTYPE html PUBLIC "xhtml1-transitional.dtd"> -->
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">
+/** 
+ * Slideshow style rules.
+ */
+ /* season style add*/
+ body {
+ 	font: 10px sans-serif;
+ }
+
+ .slide {
+ 	float: left;
+ }
+
+ .arc path {
+ 	stroke: #fff;
+ }
+ /* season style end*/
+ /* age style add */
+ .axis path,
+
+ .axis line {
+ 	fill: none;
+ 	stroke: #000;
+ 	shape-rendering: crispEdges;
+ }
+
+ .bar {
+ 	fill: steelblue;
+ }
+
+ .x.axis path {
+ 	display: none;
+ }
+ /* age style end*/
+
+ #slideshow {
+ 	margin:0 auto;
+ 	width:340px;
+ 	height:170px;
+ 	/*background:transparent url(img/bg_slideshow.jpg) no-repeat 0 0;*/
+ 	position:relative;
+ 	float: left;
+ }
+ 
+ #slideshow #slidesContainer {
+ 	margin:0 auto;
+ 	width:260px;
+ 	height:170px;
+ 	overflow:auto; /* allow scrollbar */
+ 	position:relative;
+ }
+
+ #slideshow #slidesContainer .slide {
+ 	margin:0 auto;
+ 	width:240px; 
+ 	height:170px;
+ 	position: relative;
+ 	/* reduce by 20 pixels of #slidesContainer to avoid horizontal scroll */
+ }
+
+ /** 
+ * Slideshow controls style rules.
+ */
+ .control {
+ 	display:block;
+ 	width:39px;
+ 	height:170px;
+ 	text-indent:-10000px;
+ 	position:absolute;
+ 	cursor: pointer;
+ }
+ #leftControl {
+ 	top:0;
+ 	left:0;
+ 	background:transparent url(/images/slide/control_left.jpg) no-repeat 0 0;
+ }
+ #rightControl {
+ 	top:0;
+ 	right:0;
+ 	background:transparent url(/images/slide/control_right.jpg) no-repeat 0 0;
+ }
+/** 
+ * Style rules for Demo page
+ */
+ * {
+ 	margin:0;
+ 	padding:0;
+ 	font:normal 11px Verdana, Geneva, sans-serif;
+ 	color:#ccc;
+ }/*
+ #pageContainer {
+ 	margin:0 auto;
+ 	width:960px;
+ }*/
+</style>
+<script src="javascripts/d3.v3.min.js"></script>
+<script type="text/javascript" src="javascripts/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var currentPosition = 0;
+		var slideWidth = 280;
+		var slides = $('.slide');
+		var numberOfSlides = slides.length;
+
+		$('#age').load("/html/age_chart.html");
+		$('#season').load("/html/season_chart.html");
+
+	  // Remove scrollbar in JS
+	  $('#slidesContainer').css('overflow', 'hidden');
+
+	  // Wrap all .slides with #slideInner div
+	  slides
+	  .wrapAll('<div id="slideInner"></div>')
+	    // Float left to display horizontally, readjust .slides width
+	    .css({
+	    	'float' : 'left',
+	    	'width' : slideWidth
+	    });
+
+	  // Set #slideInner width equal to total width of all slides
+	  $('#slideInner').css('width', slideWidth * numberOfSlides);
+
+	  // Insert controls in the DOM
+	  $('#slideshow')
+	  .prepend('<span class="control" id="leftControl">Clicking moves left</span>')
+	  .append('<span class="control" id="rightControl">Clicking moves right</span>');
+
+	  // Hide left arrow control on first load
+	  manageControls(currentPosition);
+
+	  // Create event listeners for .controls clicks
+	  $('.control')
+	  .bind('click', function(){
+	    // Determine new position
+	    currentPosition = ($(this).attr('id')=='rightControl') ? currentPosition+1 : currentPosition-1;
+	    
+		// Hide / show controls
+		manageControls(currentPosition);
+	    // Move slideInner using margin-left
+	    $('#slideInner').animate({
+	    	'marginLeft' : slideWidth*(-currentPosition)
+	    });
+	});
+
+  // manageControls: Hides and Shows controls depending on currentPosition
+  function manageControls(position){
+    // Hide left arrow if position is first slide
+    if(position==0){ $('#leftControl').hide() } else{ $('#leftControl').show()}
+	// Hide right arrow if position is last slide
+if(position==numberOfSlides-1){ $('#rightControl').hide() } else{ $('#rightControl').show() }
+}	
+});
+</script>
+</head>
+<body>
+	<!-- <div id="pageContainer"> -->
+		<div id="slideshow">
+			<div id="slidesContainer">
+				<div class="slide" id="age">
+					<!-- 나이 ,  연령별 -->
+				</div>
+				<div class="slide" id="season">
+					<!-- 계절별 -->
+				</div>
+				<div class="slide" id="city">
+					그 국가에서 가장 많이 방문한 도시
+				</div>
+			</div>
+		</div>
+	<!-- </div> -->
+</body>
+</html>
+	<!-- <h1><%= title %></h1>
+	<p>Welcome to <%= title %></p>
+
+	<p> menu </p>
+
+	<% if (user) { %>
+	<p>
+		<strong>id</strong>: <%= user.id %><br>
+		<strong>email</strong>: <%= user.email %><br>
+		<strong>name</strong>: <%= user.name %><br>
+		<strong>token</strong>: <%= user.token %><br>
+		<strong>birth</strong>: <%= user.birth %><br>
+		<strong>gender</strong>: <%= user.gender %><br>
+		<strong>nation</strong>: <%= user.nation %><br>
+		<strong>check</strong>: <%= user.check %><br>
+		<strong>check</strong>: <%= user.check %><br>
+
+		<strong>nation_code</strong>: <%= result.nation_code %><br>
+		<strong>nation_name</strong>: <%= result.nation_name %><br>
+
+		<img src="http://graph.facebook.com/<%=user.id%>/picture">									
+	</p>
+	<a href="/logout">로그아웃</a>
+	<% } else { %> 
+	<a href="/auth/facebook">페이스북 로그인</a>
+	<% } %>     -->

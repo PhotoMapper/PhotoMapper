@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+  <title><%=title%></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="favicon.ico">
+
+  <!-- CSS Global Compulsory -->
+  <link rel="stylesheet" href="/assets/plugins/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+
+  <!-- CSS Implementing Plugins -->
+  <link rel="stylesheet" href="/assets/plugins/line-icons/line-icons.css">
+  <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/assets/plugins/flexslider/flexslider.css">     
+  <link rel="stylesheet" href="/assets/plugins/parallax-slider/css/parallax-slider.css">
+
+  <!-- CSS Theme -->    
+  <link rel="stylesheet" href="/assets/css/themes/default.css" id="style_color">
+
+  <link rel="stylesheet" href="/stylesheets/main_style.css">
+  <link rel="stylesheet" href="/stylesheets/all_following_world_map_style.css">
+  
+  <!-- CSS Customization -->
+  <link rel="stylesheet" href="/assets/css/custom.css">
+
+  <script src="/javascripts/jquery-1.9.1.min.js" type="text/javascript"></script> <!-- 동그라미 나열 -->
+  <script src="/javascripts/layerpopup.js" type="text/javascript"></script> 
+
+</head>
+<body>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script> 
+  <script src="/javascripts/jquery.form.js"></script> 
+  <script src="/javascripts/jquery.validate.min.js"></script>
+  
+  <div class="wrapper">
+    <div class="header">
+      <!-- "c:"는 URL 재작성(rewriting) 참조 : http://ultteky.egloos.com/10500310 -->
+
+      <!-- Navbar -->
+      <div class="navbar navbar-default" role="navigation">
+
+          <div class="navbar-header">
+            <% if (user) { %>
+            <a class="navbar-brand" href="/main">
+              <img id="logo-header" src="/images/menubar/PageLogoWhite.png" alt="Logo">
+            </a>
+            <% } else { %>
+            <a class="navbar-brand" href="/intro">
+              <img id="logo-header" src="/images/menubar/PageLogoWhite.png" alt="Logo">
+            </a>
+            <% } %> 
+          </div>
+
+          <div class="menu">
+
+            <div class="facebook-login">
+              <% if (user) { %>
+              <a href="/logout">
+                <button class="btn-facebook">
+                  <i class="fa fa-facebook"></i> Logout
+                </button>
+              </a>
+              <div class="information">
+                <p class="welcome"> Welcome<br> <%= user.name %>'s photomapper</p>
+              </div>
+              <div class="picture">
+                <img src="http://graph.facebook.com/<%=user.id%>/picture">
+              </div>
+              <% } else { %>
+              <a href="/auth/facebook">
+                <button class="btn-facebook">
+                  <i class="fa fa-facebook"></i> Login
+                </button>
+              </a>
+              <% } %> 
+            </div>
+
+            <% if (user) { %>
+
+            <!-- Setting -->
+            <ul class="nav navbar-nav">
+              <li id="setting">
+                <a href="/setting">
+                  <img src="/images/menubar/setting.png" alt="설정"> 
+                </a>
+              </li>
+            </ul>
+            <!-- End Setting -->
+
+            <!-- statistics view -->
+            <ul class="nav navbar-nav">
+              <li id="statistics">
+                <a href="/statistics">
+                  <!-- <img src="/images/menubar/full_photo.png" alt="내 사진 보기"> -->
+                  <i class="fa fa-bar-chart-o"></i>
+                </a>
+              </li>
+            </ul>
+            <!-- End statistics View -->
+
+            <!-- photo view -->
+            <ul class="nav navbar-nav">
+              <li id="photoView">
+                <a href="/all_photo_view">
+                  <img src="/images/menubar/full_photo.png" alt="내 사진 보기">
+                </a>
+              </li>
+            </ul>
+            <!-- End Photo View -->
+
+
+            <!-- Friend -->
+            <ul class="nav navbar-nav">
+              <li id="friend">
+                <a href="/all_following_world_map" class="active">
+                  <img src="/images/menubar/friend_map.png" alt="친구 지도 및 사진 보기">
+                </a>
+              </li>
+            </ul>
+            <!-- End Friend -->
+            
+            <% } %> 
+
+          </div>
+          <!-- End menu -->
+
+        <!-- End Navbar -->
+      </div>        
+
+      <!-- header end -->
+    </div>
+
+    <div class="content">
+
+      <form id="goFriendMap">
+        <input type="hidden" name="user_name" />
+        <input type="hidden" name="user_id" />
+        <input type="hidden" name="nation_code" />
+
+        <div id="toggle" class="hidden">
+          <div id="friend_list_toggle" class="friend_list_toggle">
+          </div>
+        </div>
+      </form>
+
+      <div class="canvas">
+        <script>
+
+          var width = screen.width,
+          height = (screen.height*3)/4,
+          active = d3.select(null);
+
+          var pro = d3.geo.mercator()
+          .scale(width/10)
+          .translate([width/2, height*7/10]);
+
+          var path = d3.geo.path()
+          .projection(pro);
+
+          var svg = d3.select(".canvas").append("svg")
+          .attr("width", width)
+          .attr("height", height);
+
+          svg.append("rect")
+          .attr("class", "background")
+          .attr("width". width)
+          .attr("height", height);
+
+          var g = svg.append("g");  // g : group for svg
+
+          d3.json("/json/world.json", function(error, world) {
+            if (error) return console.error(error);
+
+            g.append("g")
+            .attr("class", "maps")
+            .selectAll("path")
+            .data(topojson.feature(world, world.objects.countries).features)
+            .enter().append("path")
+                .attr("d", path)  // shape of an SVG Path element is defined in "d"
+                .attr("title", function(d,i) { return d.name; })
+                .attr("class", function(d,i){
+                  <% following_visit_results.forEach(function(item, index){ %>
+                    if('<%=item.vp_nation_code%>' == d.id){
+                      return "active";
+                    }
+                  <% }); %>
+                });
+
+            g.append("path")
+              .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
+              .attr("class", "borders")
+              .attr("d", path);
+
+            g.selectAll('.fimages')
+              .data(topojson.feature(world, world.objects.countries).features)
+              .enter().append('image')
+                .attr('class', 'fimages')
+                .attr("xlink:href", function(d,i){
+                  <% following_visit_results.forEach(function(item, index){ %>
+                    if('<%=item.vp_nation_code%>' == d.id){
+                      return "/images/LoginPageLogo4.png";
+                    }
+                  <% }); %>
+                })
+                .attr("x", function(d,i){
+                  <% following_visit_results.forEach(function(item, index){ %>
+                    if('<%=item.vp_nation_code%>' == d.id){
+
+                     return ((path.bounds(d)[1][0] + path.bounds(d)[0][0])/2 - 5);
+                    }
+                  <% }); %>
+                })
+                .attr("y", function(d,i){
+                  <% following_visit_results.forEach(function(item, index){ %>
+                    if('<%=item.vp_nation_code%>' == d.id){
+
+                     return ((path.bounds(d)[0][1] + path.bounds(d)[1][1])/2 - 12);
+                    }
+                  <% }); %>
+                })
+                .attr('width', '24px')
+                .attr('height', '24px')
+                .style('cursor', 'pointer')
+                .on('click', seeFriendList)
+                .on('dblclick', seeFriendList2);
+
+          });
+
+
+      function seeFriendList(d){
+
+        $(".friend_list_toggle").empty(); // div 하위 요소 모두 제거
+
+        var div_data_nation_name = $("<a style='text-shadow: 2px 0 0 #F5D05E, -2px 0 0 #F5D05E, 0 2px 0 #F5D05E, 0 -2px 0 #F5D05E, 1px 1px #F5D05E, -1px -1px 0 #F5D05E, 1px -1px 0 #F5D05E, -1px 1px 0 #F5D05E; color:black; cursor: default;'>"+ d.properties.name + "</a>");
+        $(div_data_nation_name).appendTo("#friend_list_toggle");
+
+        var list = new Array();
+
+        var fflag = true;
+        var ii = 0;
+        var count = 0;
+
+        <% following_lists.forEach(function (item, index) { %>
+
+          list['<%=index%>'] = '<%=item.fing_following_user_id%>';
+
+          <% following_visit_results.forEach(function (item2, index2) { %>
+
+            if('<%=item.fing_following_user_id%>' == '<%=item2.vp_user_id%>'){
+              fflag = true;
+
+              if(d.id == '<%=item2.vp_nation_code%>'){
+                // for(var i = 0; i <= ii; i++){
+
+
+                  if(list['<%=index%>'] == '<%=item2.vp_user_id%>'){
+
+                    fflag = false;
+                    count ++; 
+
+                  }
+
+                // }
+
+                if(fflag == true || count == 1){
+                    var div_data = $("<a href='javascript:void();'><%=item.fing_following_user_name%></a>")
+                      .click(function(){ gotoNationPhoto('<%=item.fing_following_user_id%>', '<%=item.fing_following_user_name%>', d.id) });
+
+                    $(div_data).appendTo("#friend_list_toggle");
+                }
+
+              }
+
+            }
+
+          <% }); %>
+
+          count = 0;
+          
+        <% }); %>
+
+
+        var items = document.querySelectorAll('.friend_list_toggle a');
+
+        for(var i = 0, l = items.length; i < l; i++) {
+          items[i].style.marginLeft = (path.bounds(d)[1][0] + path.bounds(d)[0][0])/2 + 30  + "px";
+          items[i].style.marginTop = (path.bounds(d)[0][1] + path.bounds(d)[1][1])/2 - 20 + 25*i + "px";
+        }
+
+        if(document.getElementById('friend_list_toggle').className == 'friend_list_toggle'){
+          document.querySelector('.friend_list_toggle').classList.toggle('open');
+          d3.select("#toggle").classed("hidden", false);
+        }
+
+      }
+
+      function seeFriendList2(d){
+
+          document.querySelector('.friend_list_toggle').classList.toggle('open');
+
+      }
+
+      function gotoNationPhoto (fid, fname, fnationCode){
+
+        var f = document.getElementById('goFriendMap');
+
+        f.nation_code.value = fnationCode;
+        f.user_id.value = fid;
+        f.user_name.value = fname;
+        f.action="/nation_photo_view";
+
+        f.method="post";
+        f.submit();
+
+      }
+
+    </script>
+  </div>
+</div>
+<!--=== Footer ===-->
+<div class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 md-margin-bottom-40">
+        <!-- About -->
+        <div class="headline"><h2><b>Photommaper 사용자 약관</b></h2></div>  
+        <p class="margin-bottom-25 md-margin-bottom-40">PhotoMapper is ~</p>    
+        <!-- End About -->
+      </div><!--/col-md-4-->  
+
+      <div class="col-md-4">
+        <!-- Contact Us -->
+        <div class="headline"><h2><b>주소 및 연락처</b></h2></div> 
+        <address class="md-margin-bottom-40">
+          잠실 향군타워 5층, sGen Club <br />
+          서울특별시 송파구 신천동 7-29 <br />
+          Phone: xxx xxx xxxx <br />
+          Fax: xxx xxx xxxx <br />
+        </address>
+        <!-- End Contact Us -->
+      </div><!--/col-md-4-->
+
+      <div class="col-md-4">
+       <!-- Social Links -->  
+       <div class="headline"><h2>링크</h2></div> 
+       <ul class="social-icons">
+        <li><a href="#" data-original-title="Feed" class="social_rss"></a></li>
+        <li><a href="#" data-original-title="Facebook" class="social_facebook"></a></li>
+        <li><a href="#" data-original-title="Twitter" class="social_twitter"></a></li>
+        <li><a href="#" data-original-title="Goole Plus" class="social_googleplus"></a></li>
+        <li><a href="#" data-original-title="Pinterest" class="social_pintrest"></a></li>
+        <li><a href="#" data-original-title="Linkedin" class="social_linkedin"></a></li>
+        <li><a href="#" data-original-title="Vimeo" class="social_vimeo"></a></li>
+      </ul>
+      <!-- End Social Links -->
+    </div>
+  </div>
+</div> 
+</div><!--/footer-->
+<!--=== End Footer ===-->
+<div class="copyright">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">  
+        <a href="/main">
+          <img class="pull-right" id="logo-footer" src="/images/menubar/PageLogoWhite.png" alt="Logo">
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">                     
+        <p>
+          2014 &copy; PhotoMapper. ALL Rights Reserved.
+        </p>
+      </div>
+    </div>
+  </div> 
+</div><!--/copyright--> 
+</div> <!-- wrapper end -->  
+
+<script type="text/javascript" src="/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- JS Implementing Plugins -->
+<script type="text/javascript" src="/assets/plugins/back-to-top.js"></script>
+<script type="text/javascript" src="/assets/plugins/flexslider/jquery.flexslider-min.js"></script>
+<script type="text/javascript" src="/assets/plugins/parallax-slider/js/modernizr.js"></script>
+<script type="text/javascript" src="/assets/plugins/parallax-slider/js/jquery.cslider.js"></script>
+<!-- JS Page Level -->           
+<script type="text/javascript" src="/assets/js/app.js"></script>
+<script type="text/javascript" src="/assets/js/pages/index.js"></script>
+
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    App.init();
+    App.initSliders();
+    Index.initParallaxSlider();  
+  });
+
+</script>
+
+</body>
+</html>

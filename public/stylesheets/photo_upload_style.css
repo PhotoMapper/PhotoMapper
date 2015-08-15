@@ -1,0 +1,221 @@
+/*Portfolio v1
+------------------------------------*/
+.checkbox_style {
+    position:relative; 
+    z-index:7;
+    left:-113px;
+}
+
+.output_style {
+    position:relative; 
+    z-index:1; 
+    width: 250px;
+    height: 187px;
+    margin-top: -30px;
+}
+/*
+.info_style {
+    position:relative; 
+    z-index:2; 
+    top:-170px
+}*/
+.thumb {
+    position:relative; 
+    z-index:1; 
+    width: 250px;
+    height: 187px;
+    position: relative;
+    background-image:url("../images/good_none.png");
+}
+
+.onephoto {
+   /*z-index:9;*/
+   cursor: default;
+   overflow: hidden;
+   text-align: center;
+   position: relative;
+   margin-bottom: 10px;
+   width:250px;
+   height:157px;
+  margin-bottom: 30px;
+}/*
+.onephoto .mask,.onephoto .content {
+   width: 100%;
+   height: 100%;
+   position: absolute;
+   overflow: hidden;
+   top: 0;
+   left: 0;
+}*/
+.onephoto img {
+   display: block;
+   position: relative;
+}/*
+.onephoto h2 {
+   text-transform: uppercase;
+   color: #fff;
+   text-align: center;
+   position: relative;
+   font-size: 22px;
+   padding: 10px;
+   background: rgba(0, 0, 0, 0.8);
+   margin: 20px 0 0 0;
+   text-shadow:none;
+}*//*
+.onephoto p {
+   font-family: "굴림";
+   font-weight:bold;
+   font-size: 15px;
+   position: relative;
+   color: #000;
+   padding: 10px 20px 10px;
+   text-align: center;
+}*//*
+.onephoto a.info {
+   color: #fff;
+   background: #000;
+   padding: 5px 12px;
+   text-decoration: none;
+   margin-top:60px;
+   display: inline-block;
+   overflow:hidden;
+   text-transform: uppercase;
+}*//*
+.onephoto a.info:hover {
+    background:#72c02c;
+}
+*/
+/*CSS3 Hover Effect*/
+.onephoto img {
+    left:10px;
+    margin-left:-10px;
+    position:relative;
+/*   -webkit-transition: all 0.6s ease-in-out;
+   -moz-transition: all 0.6s ease-in-out;
+   -o-transition: all 0.6s ease-in-out;
+   -ms-transition: all 0.6s ease-in-out;
+   transition: all 0.6s ease-in-out;*/
+}/*
+.onephoto .mask {
+   -webkit-transition: all 0.5s linear;
+   -moz-transition: all 0.5s linear;
+   -o-transition: all 0.5s linear;
+   -ms-transition: all 0.5s linear;
+   transition: all 0.5s linear;
+   -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
+   filter: alpha(opacity=0);
+   opacity: 0;
+}
+.onephoto h2 {
+   color: #333;
+   margin: 20px 40px 0;
+   background: transparent;
+   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+   -webkit-transform: scale(0);
+   -moz-transform: scale(0);
+   -o-transform: scale(0);
+   -ms-transform: scale(0);
+   transform: scale(0);
+   -webkit-transition: all 0.5s linear;
+   -moz-transition: all 0.5s linear;
+   -o-transition: all 0.5s linear;
+   -ms-transition: all 0.5s linear;
+   transition: all 0.5s linear;
+   -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
+   filter: alpha(opacity=0);
+   opacity: 0;
+}
+
+.onephoto p {
+   color: #333;
+   -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
+   filter: alpha(opacity=0);
+   opacity: 0;
+   -webkit-transform: scale(0);
+   -moz-transform: scale(0);
+   -o-transform: scale(0);
+   -ms-transform: scale(0);
+   transform: scale(0);
+   -webkit-transition: all 0.5s linear;
+   -moz-transition: all 0.5s linear;
+   -o-transition: all 0.5s linear;
+   -ms-transition: all 0.5s linear;
+   transition: all 0.5s linear;
+}
+.onephoto a.info {
+   -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
+   filter: alpha(opacity=0);
+   opacity: 0;
+   -webkit-transform: scale(0);
+   -moz-transform: scale(0);
+   -o-transform: scale(0);
+   -ms-transform: scale(0);
+   transform: scale(0);
+   -webkit-transition: all 0.5s linear;
+   -moz-transition: all 0.5s linear;
+   -o-transition: all 0.5s linear;
+   -ms-transition: all 0.5s linear;
+   transition: all 0.5s linear;
+}
+.onephoto:hover .mask {
+   -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=100)";
+   filter: alpha(opacity=100);
+   opacity: 1;
+}
+.onephoto:hover h2,.onephoto:hover p,.onephoto:hover a.info {
+   -webkit-transform: scale(1);
+   -moz-transform: scale(1);
+   -o-transform: scale(1);
+   -ms-transform: scale(1);
+   transform: scale(1);
+   -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=100)";
+   filter: alpha(opacity=100);
+   opacity: 1;
+}*/
+.content {
+	height: 630px;
+	width: relative;
+	overflow: hidden;
+	padding-top: 40px;
+	padding-bottom: 40px;
+}
+
+.selects {
+	margin-top: 10px;
+}
+
+
+.row {
+	width:1170px;
+}
+
+.content:hover{
+    /*overflow-y: auto;*/
+    overflow: hidden;
+} 
+/*
+.content::-webkit-scrollbar {
+    width: 10px;
+}
+ */
+/* Track */
+/*.content::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}*/
+ 
+/* Handle */
+/*.content::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(141,182,205,0.8); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+.content::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(141,182,205,0.8); 
+}
+*/
+.breadcrumbs {
+	font-family: "굴림";
+}

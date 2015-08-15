@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+  <title><%=title%></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="favicon.ico">
+
+  <!-- CSS Global Compulsory -->
+  <link rel="stylesheet" href="/assets/plugins/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- CSS Implementing Plugins -->
+  <link rel="stylesheet" href="/assets/plugins/line-icons/line-icons.css">
+  <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/assets/plugins/flexslider/flexslider.css">     
+  <link rel="stylesheet" href="/assets/plugins/parallax-slider/css/parallax-slider.css">
+
+  <!-- CSS Theme -->    
+  <link rel="stylesheet" href="/assets/css/themes/default.css" id="style_color">
+
+  <!-- CSS Customization -->
+  <link rel="stylesheet" href="/assets/css/custom.css">
+
+  <!-- setting page CSS -->
+  <link rel="stylesheet" href="/stylesheets/setting_style.css">
+
+</head>
+<body>
+  <script src="/javascripts/d3.v3.min.js"></script>
+  <script src="/javascripts/topojson.v1.min.js"></script>
+
+  <div class="wrapper">
+    <div class="header">
+      <!-- "c:"는 URL 재작성(rewriting) 참조 : http://ultteky.egloos.com/10500310 -->
+
+      <!-- Navbar -->
+      <div class="navbar navbar-default" role="navigation">
+
+          <div class="navbar-header">
+            <% if (user) { %>
+            <a class="navbar-brand" href="/main">
+              <img id="logo-header" src="/images/menubar/PageLogoWhite.png" alt="Logo">
+            </a>
+            <% } else { %>
+            <a class="navbar-brand" href="/intro">
+              <img id="logo-header" src="/images/menubar/PageLogoWhite.png" alt="Logo">
+            </a>
+            <% } %> 
+          </div>
+
+          <div class="menu">
+
+            <div class="facebook-login">
+              <% if (user) { %>
+              <a href="/logout">
+                <button class="btn-facebook">
+                  <i class="fa fa-facebook"></i> Logout
+                </button>
+              </a>
+              <div class="information">
+                <p class="welcome"> Welcome<br> <%= user.name %>'s photomapper</p>
+              </div>
+              <div class="picture">
+                <img src="http://graph.facebook.com/<%=user.id%>/picture">
+              </div>
+              <% } else { %>
+              <a href="/auth/facebook">
+                <button class="btn-facebook">
+                  <i class="fa fa-facebook"></i> Login
+                </button>
+              </a>
+              <% } %> 
+            </div>
+
+            <% if (user) { %>
+
+            <!-- Setting -->
+            <ul class="nav navbar-nav">
+              <li id="setting">
+                <a href="/setting" class="active">
+                  <img src="/images/menubar/setting.png" alt="설정"> 
+                </a>
+              </li>
+            </ul>
+            <!-- End Setting -->
+
+            <!-- statistics view -->
+            <ul class="nav navbar-nav">
+              <li id="statistics">
+                <a href="/statistics">
+                  <!-- <img src="/images/menubar/full_photo.png" alt="내 사진 보기"> -->
+                  <i class="fa fa-bar-chart-o"></i>
+                </a>
+              </li>
+            </ul>
+            <!-- End statistics View -->
+
+            <!-- photo view -->
+            <ul class="nav navbar-nav">
+              <li id="photoView">
+                <a href="/all_photo_view">
+                  <img src="/images/menubar/full_photo.png" alt="내 사진 보기">
+                </a>
+              </li>
+            </ul>
+            <!-- End Photo View -->
+
+
+            <!-- Friend -->
+            <ul class="nav navbar-nav">
+              <li id="friend">
+                <a href="/all_following_world_map">
+                  <img src="/images/menubar/friend_map.png" alt="친구 지도 및 사진 보기">
+                </a>
+              </li>
+            </ul>
+            <!-- End Friend -->
+            
+            <% } %> 
+
+          </div>
+          <!-- End menu -->
+
+
+        <!-- End Navbar -->
+      </div>        
+
+      <!-- header end -->
+    </div>
+
+
+    <!-- Content -->
+    <div class="container content">
+      <!-- TODO 1 : facebook으로부터 'profile 사진', '이름', '아이디', '생년월일' 가져오기 -->
+      <!-- TODO 2 : 지도 색깔 / stroke 모양 / 패턴 바꾸는 메뉴 만들기 -->
+      <!-- TODO 3 : 계정 폐쇠 버튼 만들기 -->
+
+      <!-- 계정 정보 -->
+      <!--Setting Header-->
+      <div class="col-md-12 top">
+        <div class="row setting-header">
+          <!-- <h2 class="pull-left"><i class="fa fa-user"></i> My Account</h2> -->
+          <h2 class="pull-left"><i class="fa fa-user"></i> 내 계정</h2>
+        </div>
+      </div>
+
+
+
+    <!-- 지도 꾸미기 -->
+    <script>
+      function birth_change_form(){
+        d3.select("#user_birth_before").classed("hidden", true);
+        d3.select("#birth_modify_button_before").classed("hidden", true);
+
+        d3.select("#user_birth_after").classed("hidden", false);
+        d3.select("#birth_modify_button_after").classed("hidden", false);
+      }
+
+      function email_change_form(){
+        d3.select("#user_email_before").classed("hidden", true);
+        d3.select("#email_modify_button_before").classed("hidden", true);
+
+        d3.select("#user_email_after").classed("hidden", false);
+        d3.select("#email_modify_button_after").classed("hidden", false);
+      }
+
+      function nation_change_form(){
+        d3.select("#user_nation_before").classed("hidden", true);
+        d3.select("#nation_modify_button_before").classed("hidden", true);
+
+        d3.select("#user_nation_after").classed("hidden", false);
+        d3.select("#nation_modify_button_after").classed("hidden", false);
+      }
+
+    </script>
+
+    <!-- Setting content -->
+        <div class="headline"><h3><i class="fa fa-gear"></i><b> 기본 설정</b></h3></div>
+    <div class="col-md-11">
+      <div class="panel panel-grey margin-bottom-40">
+        <div class="panel-heading">
+          <div class="profile_wrapper">
+            <div class="profile_image">
+              <img class="img-responsive" src="http://graph.facebook.com/<%=user.id%>/picture" alt="" />
+            </div>
+            <div class="inner-team">
+              <p class="user_name"><b><%= user.name %></b></p>
+              <p class="color-white"><%= user.email %></p>
+            </div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <table class="table">
+            <tbody>
+              <tr>
+                <th>이름</th>
+                <td><%= user.name %></td>
+                <form method="post" action="/delete_user">
+                  <input type="hidden" name="delete_user">
+                  <td><button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-trash-o"></i> 계정삭제</button></td>
+                </form>
+              </tr>
+            </tbody>
+            <tbody>
+            <tbody>
+              <tr>
+                <th>성별</th>
+                <td><%= user.gender %></td>
+                <td></td>
+              </tr>
+            </tbody>
+              <tr>
+                <th>생년월일</th>
+                <td id="user_birth_before" type="date"><%=user.birth.date("YYYY-MM-DD")%></td>
+                <td id="birth_modify_button_before"><button class="btn btn-warning btn-xs" onclick="birth_change_form();"><i class="fa fa-pencil"></i> 수정</button></td>
+
+              <form method="post" action="/modify_user_birth">
+                <td class="hidden" id="user_birth_after"><input type="date" name="user_birth"></td>
+                <td class="hidden" id="birth_modify_button_after"><button type="submit" class="btn btn-success btn-xs"><i class="fa fa-check"></i> 확인</button></td>
+              </form>
+              </tr>
+            </tbody>
+            <tbody>
+              <tr>
+                <th>국적</th>
+                  <td id="user_nation_before"><%=user.nation%></td>
+                  <td id="nation_modify_button_before"><button class="btn btn-warning btn-xs" onclick="nation_change_form();"><i class="fa fa-pencil"></i> 수정</button></td>
+
+                  <form method="post" action="/modify_user_nation">
+                    <td class="hidden" id="user_nation_after"><input type="text" name="user_nation"></td>
+                    <td class="hidden" id="nation_modify_button_after"><button type="submit" class="btn btn-success btn-xs"><i class="fa fa-check"></i> 확인</button></td>
+                  </form>
+              </tr>
+            </tbody>
+            <tbody>
+              <tr>
+                <th>이메일</th>
+                <td id="user_email_before"><%=user.email%></td>
+                <td id="email_modify_button_before"><button class="btn btn-warning btn-xs" onclick="email_change_form();"><i class="fa fa-pencil"></i> 수정</button></td>
+
+                <form method="post" action="/modify_user_email">
+                  <td class="hidden" id="user_email_after"><input type="text" name="user_email"></td>
+                  <td class="hidden" id="email_modify_button_after"><button type="submit" class="btn btn-success btn-xs"><i class="fa fa-check"></i> 확인</button></td>
+                </form>
+              </tr>
+            </tbody>
+            <tbody>
+              <tr>
+                <th style="vertical-align:middle;">사진 용량</th>
+                <td>
+                  <p class="heading-xs" style="color:black;"><%= (user.size / 1048576).toFixed(1) %> MB / 2,048 MB</p>
+                  <div class="progress progress-u progress-xxs">
+                      <div class="progress-bar progress-bar-purple" id="progress" role="progressbar" style="width:<%=user.percentage%>%;">
+                      </div>
+                  </div>
+                </td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>                      
+      </div>
+    </div>
+
+
+    <script type="text/javascript">
+
+    // document.getElementById(progress).style.width = <%=user.size%> + 'px';
+
+      var colors = null;
+
+      function lightgrey(){
+        document.getElementById("countries").style.fill= "#61c3c3";
+        colors = "#61c3c3";
+      }
+      function powderblue(){
+        document.getElementById("countries").style.fill= "#619ac3";
+        colors = "#619ac3";
+      }
+      function palegoldenrod(){
+        document.getElementById("countries").style.fill= "#8b61c3";
+        colors = "#8b61c3";
+      }
+      function thistle(){
+        document.getElementById("countries").style.fill= "#8baeba";
+        colors = "#8baeba";
+      }
+      function lavender(){
+        document.getElementById("countries").style.fill= "#b7c361";
+        colors = "#b7c361";
+      }
+      function lightpink(){
+        document.getElementById("countries").style.fill= "#61c38f";
+        colors = "#61c38f";
+      }
+      function darkorange(){
+        document.getElementById("countries").style.fill= "#929292";
+        colors = "#929292";
+      }
+
+      function change_map_color(){
+
+        var f = document.getElementById('mapColorChange');
+
+        f.user_color.value = colors;
+
+        f.action="/modify_user_color";
+        f.method="post";
+        f.submit();
+      }
+    </script>
+
+
+    <!-- Vector Map -->
+    <div class="col-md-12" id="vertorMap">
+        <div class="headline"><h3><i class="fa fa-gear"></i><b> 세계지도 색깔 설정</b></h3></div>
+        <button class="btn-u btn-u-sm btn-u-lightgrey margin-bottom-10" id="focus-single" onclick="lightgrey()"></button>
+        <button class="btn-u btn-u-sm btn-u-powderblue margin-bottom-10" id="focus-single" onclick="powderblue()"></button>
+        <button class="btn-u btn-u-sm btn-u-palegoldenrod margin-bottom-10" id="focus-single" onclick="palegoldenrod()"></button>
+        <button class="btn-u btn-u-sm btn-u-thistle margin-bottom-10" id="focus-single" onclick="thistle()"></button>
+        <button class="btn-u btn-u-sm btn-u-lavender margin-bottom-10" id="focus-single" onclick="lavender()"></button>   
+        <button class="btn-u btn-u-sm btn-u-lightpink margin-bottom-10" id="focus-single" onclick="lightpink()"></button>
+        <button class="btn-u btn-u-sm btn-u-darkorange margin-bottom-10" id="focus-single" onclick="darkorange()"></button>     
+        <script>
+          var margin = {top: -5, right: -5, bottom: -5, left: -5},
+          width = 1170 - margin.left - margin.right,
+          height = 500 - margin.top - margin.bottom;
+
+          var projection = d3.geo.mercator()
+          .scale(width/10)
+          .translate([width/2, height*7/10]);
+
+          var path = d3.geo.path()
+          .projection(projection);
+
+          var svg = d3.select("#vertorMap").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+          svg.append("rect")
+          .attr("class", "background")
+          .attr("width". width)
+          .attr("height", height);
+
+          var g = svg.append("g");  // g : group for svg
+
+          d3.json("/json/world.json", function(error, world) {
+            if (error) return console.error(error);
+
+            g.append("g")
+              .attr("id", "countries")
+              .selectAll("path")
+              .data(topojson.feature(world, world.objects.countries).features)
+              .enter().append("path")
+                .attr("d", path);
+
+            g.append("path")
+              .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
+              .attr("id", "borders")
+              .attr("d", path);
+
+            d3.select("#countries").style("fill", "<%=user.color%>");
+
+          });
+
+        </script>
+    </div> 
+    <!-- End Vector Map -->
+
+
+    <!-- 계정 폐쇠 / 완료(저장) 버튼 -->
+    <div class="col-md-12 bottom">
+      <div class="account-manager">
+        <form id="mapColorChange">
+          <input type="hidden" name="user_color"/>
+          <button class="btn btn-success" onclick="change_map_color();"><i class="fa fa-check"></i> 저장하기</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- End Content -->
+<!--=== Footer ===-->
+<div class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 md-margin-bottom-40">
+        <!-- About -->
+        <div class="headline"><h2><b>Photommaper 사용자 약관</b></h2></div>  
+        <p class="margin-bottom-25 md-margin-bottom-40">PhotoMapper is ~</p>    
+        <!-- End About -->
+      </div><!--/col-md-4-->  
+
+      <div class="col-md-4">
+        <!-- Contact Us -->
+        <div class="headline"><h2><b>주소 및 연락처</b></h2></div> 
+        <address class="md-margin-bottom-40">
+          잠실 향군타워 5층, sGen Club <br />
+          서울특별시 송파구 신천동 7-29 <br />
+          Phone: xxx xxx xxxx <br />
+          Fax: xxx xxx xxxx <br />
+        </address>
+        <!-- End Contact Us -->
+      </div><!--/col-md-4-->
+
+      <div class="col-md-4">
+       <!-- Social Links -->  
+       <div class="headline"><h2>링크</h2></div> 
+       <ul class="social-icons">
+        <li><a href="#" data-original-title="Feed" class="social_rss"></a></li>
+        <li><a href="#" data-original-title="Facebook" class="social_facebook"></a></li>
+        <li><a href="#" data-original-title="Twitter" class="social_twitter"></a></li>
+        <li><a href="#" data-original-title="Goole Plus" class="social_googleplus"></a></li>
+        <li><a href="#" data-original-title="Pinterest" class="social_pintrest"></a></li>
+        <li><a href="#" data-original-title="Linkedin" class="social_linkedin"></a></li>
+        <li><a href="#" data-original-title="Vimeo" class="social_vimeo"></a></li>
+      </ul>
+      <!-- End Social Links -->
+    </div>
+  </div>
+</div> 
+</div><!--/footer-->
+<!--=== End Footer ===-->
+<div class="copyright">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">  
+        <a href="/main">
+          <img class="pull-right" id="logo-footer" src="/images/menubar/PageLogoWhite.png" alt="Logo">
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">                     
+        <p>
+          2014 &copy; PhotoMapper. ALL Rights Reserved.
+        </p>
+      </div>
+    </div>
+  </div> 
+</div><!--/copyright--> 
+</div> <!-- wrapper end -->
+
+<script type="text/javascript" src="/assets/plugins/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- JS Implementing Plugins -->
+<script type="text/javascript" src="/assets/plugins/back-to-top.js"></script>
+<script type="text/javascript" src="/assets/plugins/flexslider/jquery.flexslider-min.js"></script>
+<script type="text/javascript" src="/assets/plugins/parallax-slider/js/modernizr.js"></script>
+<script type="text/javascript" src="/assets/plugins/parallax-slider/js/jquery.cslider.js"></script>
+<!-- JS Page Level -->           
+<script type="text/javascript" src="/assets/js/app.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function() {
+  App.init();
+  App.initSliders();   
+});
+</script>
+
+</body>
+</html>

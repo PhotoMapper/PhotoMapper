@@ -1,0 +1,329 @@
+/* Add here all your css styles (customizations) */
+
+@font-face {
+  font-family: 'Nanum Barun Gothic';
+  font-style: normal;
+  src: local('Nanum Barun Gothic Regular'), local('Nanum Barun Gothic-Regular'), local('NanumBarunGothic Regular');
+  src: url(/images/NanumBarunGothic.eot);
+  src: url(/images/NanumBarunGothic.eot?#iefix) format('embedded-opentype'),
+       url(/images/NanumBarunGothic.woff) format('woff'),
+       url(/images/NanumBarunGothic.ttf) format('truetype');
+}
+
+body{
+	margin: 0;
+	padding: 0;
+	color: #333;
+	font-size: 13px; 
+	line-height: 1.6;
+}
+
+
+/*.header .navbar-default .container {
+
+	margin-top: 5%;
+
+}*/
+
+#onephoto a:hover{
+	background-color: #4682b4;
+}
+
+#onephoto a{
+	width : 50px;
+	height : 40px;
+}
+
+#onephoto a> i{
+	font-size: 27px;
+	text-align: middle;
+}
+
+
+.header .navbar-default .facebook-login .btn-facebook {
+	float: right;
+	background-color: #4863ae;
+	color: #fff;
+	border-color: #4863ae;
+	border-radius: 4px !important;
+	box-shadow: none;
+	position: relative;
+	padding: 6px 14px;
+	margin-top: 17px;	
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+.header .navbar-default .facebook-login .picture {
+	float: right;
+	margin-left: 50px;
+	margin-top: 10px;	
+}
+
+.header .navbar-default .facebook-login .information .welcome {
+	float: right;
+	margin-left: 20px;	
+	color: #fff;
+}
+
+.header .navbar-default .facebook-login .btn-facebook:hover {
+	background-color: #fff;
+	color: #4863ae;
+	/*opacity: 0.7;*/
+}
+
+/*.header .navbar-default .navbar-nav > .active > a {
+	margin-top: 10%;
+	border-bottom: solid 2px #afeeee;
+}*/
+
+.header .navbar-default .navbar-nav > li > a {
+	color: #afeeee;
+	font-weight: bold;
+}
+
+.header .navbar-default .navbar-nav > li > a:hover {
+	border-bottom: 2px solid #afeeee;
+}
+
+	.header .navbar-default .navbar-nav > li > a.active  {
+		border-bottom: 2px solid #afeeee;
+	}
+
+.header .navbar-default .navbar-nav > li > ul {
+	border-top: 2px solid #afeeee;
+}
+
+/*.header .navbar-default .navbar-nav > li > ul > li > a:hover {
+	font-size: 18px;
+	color: #afeeee;
+}*/
+
+	/*.header .navbar-default .navbar-nav .active {
+		border-bottom: 2px solid #afeeee;
+	}*/
+
+
+	/*.header .navbar-default .navbar-nav > li > ul > li > a.active {
+		font-size: 18px;
+		color: #afeeee;
+	}*/
+/*4682b4*/
+
+.header .navbar-default .navbar-nav > li > a {
+	margin-top: 7%;
+}
+
+/*.header .dropdown-menu li a {
+	color: #4682b4;
+	font-size: 13px;
+	font-weight: 400;
+	padding: 5%;
+	border-bottom: solid 1px #eee;
+}
+*/
+
+.header .dropdown {
+	margin: auto;
+  	font-family: 'Nanum Barun Gothic';
+}
+
+.headline h2, .headline h3, .headline h4 {
+	border-bottom: 2px solid #afeeee;
+}
+
+.header{
+	height: relative;
+	background-color: #1f3036;
+	/*z-index: 99;
+	position: relative;
+	border-bottom: solid 2px #eee;
+	box-shadow: 0px 0px 9px rgba(0,0,0,0.15);*/
+	z-index: 99;
+	position: relative;
+  	font-family: 'Nanum Barun Gothic';
+}
+
+.container {
+	margin: 0 auto;
+	margin-right: auto;
+	margin-left: auto;
+	padding-left: 0px;
+	padding-right: 0px;
+  	font-family: 'Nanum Barun Gothic';
+}
+
+.canvas{
+	margin: 0;
+	padding: 0;
+	color: #333;
+	font-size: 13px;
+	line-height: 1.6;
+}
+
+.nologin{
+	float: right;
+}
+
+.navbar-header {
+	position: relative;
+	float: left;
+}
+
+.navbar-header .navbar-brand {
+	position: relative;
+	float: left;
+	padding: 25px;
+	padding-left: 50px;
+}
+
+.input-group {
+	position: relative;
+	float: right;
+	/*padding: 8px 14px;*/
+	padding-top: 10px;
+	display: table;
+	float: left;
+	/*margin: 0 auto;*/
+}
+
+.input-group .form-control{
+	/*float:left;*/
+	width:150px;
+	border-bottom-left-radius: 4px;
+	border-top-left-radius: 4px;
+	border-bottom-right-radius: 0px;
+	border-top-right-radius: 0px;
+}
+
+.btn-u {
+	/*float: left;*/
+	/*border-radius: 1px;*/
+	font-size: 14px;
+	cursor: pointer;
+	font-weight: 400;
+	padding: 5.5px 14px;
+	position: relative;
+	background-color: #86bcce;
+	display: inline-block;
+	text-decoration: none;
+}
+
+	#search_button{
+		border-bottom-left-radius: 0px;
+		border-top-left-radius: 0px;
+		border-bottom-right-radius: 4px;
+		border-top-right-radius: 4px;
+	}
+
+	.btn-u:hover {
+		background-color: #4863ae;
+	}
+
+	.btn-u:active {
+		background-color: #4863ae;
+	}
+
+	.btn-u.active {
+		background-color: #4863ae;
+	}
+
+.menu {
+	min-height: 68px;
+	display: block;
+	text-decoration:none;
+}
+
+	.memu a img {
+		float: right;
+		text-decoration:none;
+		display: inline-block;
+	}
+
+	.menu.nav.active#friend{
+		border-bottom: 20px solid #afeeee;
+	}
+
+#setting {
+	float: right;
+	border-bottom: none;
+	text-decoration:none;
+	padding-right: 30px;
+	padding-left: 30px;
+	position: relative;
+}
+
+#setting#active{
+	float: right;
+	border-bottom: none;
+	text-decoration:none;
+	padding-right: 30px;
+	padding-left: 30px;
+	position: relative;
+	border-top: 20px solid #afeeee;
+}
+
+#friend {
+	float: right;
+	text-decoration:none;
+	padding-right: 30px;
+	padding-top: 2px;
+	position: relative;
+}
+
+#statistics i {
+	font-size: 25px;
+	color: #fff;
+	margin-top: 2px;
+	margin-bottom: 0px;
+}
+
+#statistics {
+	font-size: 50px;
+	color: #fff;
+	float: right;
+	border-bottom: none;
+	text-decoration:none;
+	margin-top: -3px;
+	padding-right: 30px;
+	padding-left: 30px;
+	position: relative;
+}
+
+	#statistics.active {
+		float: right;
+		border-bottom: none;
+		text-decoration:none;
+		margin-top: -3px;
+		padding-right: 30px;
+		padding-left: 30px;
+		position: relative;
+		border-top: 20px solid #afeeee;
+	}
+
+#photoView {
+	float: right;
+	text-decoration:none;
+	padding-right: 30px;
+	padding-left: 30px;
+	padding-top: 4px;
+	position: relative;
+}
+
+input[type=date] {
+	line-height: 20px; 
+}
+
+@media (min-width: 768px){
+	.container .navbar-header{
+		margin-top: 10px;
+		float: left;
+	}
+
+
+	.container .menu .navbar_menu{
+		margin-top: 10px;
+		float: left;
+	}
+
+}

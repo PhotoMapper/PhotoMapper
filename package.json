@@ -1,0 +1,24 @@
+{
+  "name": "photomapper",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "3.2.6",
+    "ejs": "*",
+    "mysql": "*",
+    "date-utils": "*",
+    "socket.io": "*",
+    "express-ejs-layouts": "*",
+    "passport": "~0.1.17",
+    "passport-facebook": "~1.0.2",
+    "async": "~0.2.9",
+    "html-to-text": "0.0.7",
+    "request": "~2.33.0",
+    "easyimage":"*",
+    "connect-flash": "~0.1.1",
+    "fb": "~0.7.0"
+  }
+}
